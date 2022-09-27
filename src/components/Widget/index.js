@@ -31,7 +31,9 @@ import {
   changeOldUrl,
   setDomHighlight,
   evalUrl,
-  setCustomCss
+  setCustomCss,
+  dropMessages,
+  resetSessionId
 } from 'actions';
 import { safeQuerySelectorAll } from 'utils/dom';
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
@@ -502,7 +504,16 @@ class Widget extends Component {
       dispatch,
       disableTooltips
     } = this.props;
+
+    if (isChatOpen) {
+      this.removeHistory();
+      this.createNewSession();
+    } else {
+      this.resendInitPayload();
+    }
+
     if (isChatOpen && this.delayedMessage) {
+
       if (!disableTooltips) dispatch(showTooltip(true));
       clearTimeout(this.messageDelayTimeout);
       this.dispatchMessage(this.delayedMessage);
@@ -522,6 +533,28 @@ class Widget extends Component {
     }
     clearTimeout(this.tooltipTimeout);
     dispatch(toggleChat());
+  }
+
+  removeHistory() {
+    // removes session data and messages from the session or local storage
+    const {storage, dispatch } = this.props;
+    storage.removeItem(SESSION_NAME);
+
+    // removes
+    dispatch(dropMessages());
+    dispatch(resetSessionId());
+  }
+
+  createNewSession() {
+    const { socket } = this.props;
+    socket.emit('session_request');
+  }
+
+  resendInitPayload() {
+    const { socket, customData, initPayload } = this.props;
+    const sessionId = this.getSessionId();
+
+    socket.emit('user_uttered', { message: initPayload, customData, session_id: sessionId });
   }
 
   toggleFullScreen() {
