@@ -154,6 +154,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
           tooltipPayload={props.tooltipPayload}
           tooltipDelay={props.tooltipDelay}
           disableTooltips={props.disableTooltips}
+          resetSessionOnClose={props.resetSessionOnClose}
           defaultHighlightCss={props.defaultHighlightCss}
           defaultHighlightAnimation={props.defaultHighlightAnimation}
           defaultHighlightClassname={props.defaultHighlightClassname}
@@ -203,6 +204,7 @@ ConnectedWidget.propTypes = {
     onChatHidden: PropTypes.func
   }),
   disableTooltips: PropTypes.bool,
+  resetSessionOnClose: PropTypes.bool,
   defaultHighlightCss: PropTypes.string,
   defaultHighlightAnimation: PropTypes.string,
   mainColor: PropTypes.string,
@@ -220,7 +222,7 @@ ConnectedWidget.defaultProps = {
   connectingText: 'Waiting for server...',
   fullScreenMode: false,
   hideWhenNotConnected: true,
-  autoClearCache: false,
+  autoClearCache: true,
   connectOn: 'mount',
   onSocketEvent: {},
   protocol: 'socketio',
@@ -250,7 +252,8 @@ ConnectedWidget.defaultProps = {
     onChatVisible: () => {},
     onChatHidden: () => {}
   },
-  disableTooltips: false,
+  disableTooltips: true,
+  resetSessionOnClose: true,
   mainColor: '',
   conversationBackgroundColor: '',
   userTextColor: '',
