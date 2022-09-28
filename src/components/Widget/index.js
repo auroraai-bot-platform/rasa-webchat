@@ -502,14 +502,19 @@ class Widget extends Component {
     const {
       isChatOpen,
       dispatch,
-      disableTooltips
+      disableTooltips,
+      resetSessionOnClose
     } = this.props;
 
-    if (isChatOpen) {
-      this.removeHistory();
-      this.createNewSession();
-    } else {
-      this.resendInitPayload();
+    if (resetSessionOnClose) {
+      if (isChatOpen) {
+        this.removeHistory();
+        this.createNewSession();
+      } else {
+        // remove history in case there are delayed messages in queue
+        this.removeHistory();
+        this.resendInitPayload();
+      }
     }
 
     if (isChatOpen && this.delayedMessage) {
@@ -536,17 +541,14 @@ class Widget extends Component {
   }
 
   removeHistory() {
-    // removes session data and messages from the session or local storage
-    const {storage, dispatch } = this.props;
-    storage.removeItem(SESSION_NAME);
-
-    // removes
+    const { dispatch } = this.props;
     dispatch(dropMessages());
-    dispatch(resetSessionId());
   }
 
   createNewSession() {
-    const { socket } = this.props;
+    const { socket, storage, dispatch } = this.props;
+    storage.removeItem(SESSION_NAME);
+    dispatch(resetSessionId());
     socket.emit('session_request');
   }
 
@@ -690,6 +692,7 @@ Widget.propTypes = {
   domHighlight: PropTypes.shape({}),
   storage: PropTypes.shape({}),
   disableTooltips: PropTypes.bool,
+  resetSessionOnClose: PropTypes.bool,
   defaultHighlightAnimation: PropTypes.string,
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
@@ -706,7 +709,8 @@ Widget.defaultProps = {
   tooltipPayload: null,
   inputTextFieldHint: 'Type a message...',
   oldUrl: '',
-  disableTooltips: false,
+  disableTooltips: true,
+  resetSessionOnClose: true,
   defaultHighlightClassname: '',
   defaultHighlightCss: 'animation: 0.5s linear infinite alternate default-botfront-blinker-animation; outline-style: solid;',
   // unfortunately it looks like outline-style is not an animatable property on Safari
