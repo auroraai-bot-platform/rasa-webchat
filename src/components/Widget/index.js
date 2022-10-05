@@ -500,6 +500,7 @@ class Widget extends Component {
 
   toggleConversation() {
     const {
+      initialized,
       isChatOpen,
       dispatch,
       disableTooltips,
@@ -510,7 +511,7 @@ class Widget extends Component {
       if (isChatOpen) {
         this.removeHistory();
         this.createNewSession();
-      } else {
+      } else if (initialized) {
         // remove history in case there are delayed messages in queue
         this.removeHistory();
         this.resendInitPayload();
