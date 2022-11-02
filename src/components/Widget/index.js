@@ -40,6 +40,7 @@ import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
 import { isVideo, isImage, isButtons, isText, isCarousel } from './msgProcessor';
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
+import { setAuroraaiAccessToken } from '../../store/actions';
 
 class Widget extends Component {
   constructor(props) {
@@ -63,12 +64,16 @@ class Widget extends Component {
     styleNode.innerHTML = defaultHighlightAnimation;
     document.body.appendChild(styleNode);
 
+    const params = new URLSearchParams(window.location.search);
+    const auroraaiAccessToken = params.get('auroraai_access_token');
+    dispatch(setAuroraaiAccessToken(auroraaiAccessToken));
+    console.log('auroraai_access_token', params.has('auroraai_access_token'));
+
     this.intervalId = setInterval(() => dispatch(evalUrl(window.location.href)), 500);
     if (connectOn === 'mount') {
       this.initializeWidget();
       return;
     }
-
 
     const localSession = getLocalSession(storage, SESSION_NAME);
     const lastUpdate = localSession ? localSession.lastUpdate : 0;
@@ -456,7 +461,8 @@ class Widget extends Component {
       isChatVisible,
       embedded,
       connected,
-      dispatch
+      dispatch,
+      auroraaiAccessToken
     } = this.props;
 
     // Send initial payload when chat is opened or widget is shown
@@ -468,9 +474,11 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
+      const data = {...customData, auroraaiAccessToken};
+
       // eslint-disable-next-line no-console
       console.log('sending init payload', sessionId);
-      socket.emit('user_uttered', { message: initPayload, customData, session_id: sessionId });
+      socket.emit('user_uttered', { message: initPayload, data, session_id: sessionId });
       dispatch(initialize());
     }
   }
@@ -483,7 +491,8 @@ class Widget extends Component {
       connected,
       isChatOpen,
       dispatch,
-      tooltipSent
+      tooltipSent,
+      auroraaiAccessToken
     } = this.props;
 
     if (connected && !isChatOpen && !tooltipSent.get(tooltipPayload)) {
@@ -491,7 +500,10 @@ class Widget extends Component {
 
       if (!sessionId) return;
 
-      socket.emit('user_uttered', { message: tooltipPayload, customData, session_id: sessionId });
+
+      const data = {...customData, auroraaiAccessToken};
+
+      socket.emit('user_uttered', { message: tooltipPayload, data, session_id: sessionId });
 
       dispatch(triggerTooltipSent(tooltipPayload));
       dispatch(initialize());
@@ -554,10 +566,12 @@ class Widget extends Component {
   }
 
   resendInitPayload() {
-    const { socket, customData, initPayload } = this.props;
+    const { socket, customData, initPayload, auroraaiAccessToken } = this.props;
     const sessionId = this.getSessionId();
 
-    socket.emit('user_uttered', { message: initPayload, customData, session_id: sessionId });
+    const data = {...customData, auroraaiAccessToken};
+
+    socket.emit('user_uttered', { message: initPayload, data, session_id: sessionId });
   }
 
   toggleFullScreen() {
@@ -657,7 +671,8 @@ const mapStateToProps = state => ({
   oldUrl: state.behavior.get('oldUrl'),
   pageChangeCallbacks: state.behavior.get('pageChangeCallbacks'),
   domHighlight: state.metadata.get('domHighlight'),
-  messages: state.messages
+  messages: state.messages,
+  auroraaiAccessToken: state.behavior.get('auroraaiAccessToken')
 });
 
 Widget.propTypes = {
@@ -697,7 +712,8 @@ Widget.propTypes = {
   defaultHighlightAnimation: PropTypes.string,
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
-  messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
+  messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
+  auroraaiAccessToken: PropTypes.string
 };
 
 Widget.defaultProps = {

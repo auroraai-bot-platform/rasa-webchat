@@ -79,6 +79,9 @@ export default function (
       case actionTypes.TRIGGER_MESSAGE_DELAY: {
         return storeParams(state.set('messageDelayed', action.messageDelayed));
       }
+      case actionTypes.SET_AURORAAI_ACCESS_TOKEN: {
+        return storeParams(state.set('auroraaiAccessToken', action.token));
+      }
       case actionTypes.SET_OLD_URL: {
         return storeParams(state.set('oldUrl', action.url));
       }

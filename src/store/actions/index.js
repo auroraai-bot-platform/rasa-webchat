@@ -260,3 +260,10 @@ export function resetSessionId() {
   };
 }
 
+export function setAuroraaiAccessToken(token) {
+  return {
+    type: actions.SET_AURORAAI_ACCESS_TOKEN,
+    token
+  };
+}
+
