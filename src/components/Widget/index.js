@@ -478,7 +478,7 @@ class Widget extends Component {
 
       // eslint-disable-next-line no-console
       console.log('sending init payload', sessionId);
-      socket.emit('user_uttered', { message: initPayload, data, session_id: sessionId });
+      socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
       dispatch(initialize());
     }
   }
@@ -503,7 +503,7 @@ class Widget extends Component {
 
       const data = {...customData, auroraaiAccessToken};
 
-      socket.emit('user_uttered', { message: tooltipPayload, data, session_id: sessionId });
+      socket.emit('user_uttered', { message: tooltipPayload, customData: data, session_id: sessionId });
 
       dispatch(triggerTooltipSent(tooltipPayload));
       dispatch(initialize());
@@ -571,7 +571,7 @@ class Widget extends Component {
 
     const data = {...customData, auroraaiAccessToken};
 
-    socket.emit('user_uttered', { message: initPayload, data, session_id: sessionId });
+    socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
   }
 
   toggleFullScreen() {
