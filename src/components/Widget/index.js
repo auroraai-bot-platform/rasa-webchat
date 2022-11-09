@@ -64,12 +64,6 @@ class Widget extends Component {
     styleNode.innerHTML = defaultHighlightAnimation;
     document.body.appendChild(styleNode);
 
-    const params = new URLSearchParams(window.location.search);
-    const auroraaiAccessToken = params.get('auroraai_access_token');
-
-    // directly dispatching this event breaks automatic opening of the widget with an active session
-    setTimeout(() => dispatch(setAuroraaiAccessToken(auroraaiAccessToken)));
-
     this.intervalId = setInterval(() => dispatch(evalUrl(window.location.href)), 500);
     if (connectOn === 'mount') {
       this.initializeWidget();
@@ -462,8 +456,7 @@ class Widget extends Component {
       isChatVisible,
       embedded,
       connected,
-      dispatch,
-      auroraaiAccessToken
+      dispatch
     } = this.props;
 
     // Send initial payload when chat is opened or widget is shown
@@ -475,7 +468,7 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
-      const data = {...customData, auroraaiAccessToken};
+      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
 
       // eslint-disable-next-line no-console
       console.log('sending init payload', sessionId);
@@ -492,8 +485,7 @@ class Widget extends Component {
       connected,
       isChatOpen,
       dispatch,
-      tooltipSent,
-      auroraaiAccessToken
+      tooltipSent
     } = this.props;
 
     if (connected && !isChatOpen && !tooltipSent.get(tooltipPayload)) {
@@ -502,7 +494,7 @@ class Widget extends Component {
       if (!sessionId) return;
 
 
-      const data = {...customData, auroraaiAccessToken};
+      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
 
       socket.emit('user_uttered', { message: tooltipPayload, customData: data, session_id: sessionId });
 
@@ -567,10 +559,10 @@ class Widget extends Component {
   }
 
   resendInitPayload() {
-    const { socket, customData, initPayload, auroraaiAccessToken } = this.props;
+    const { socket, customData, initPayload } = this.props;
     const sessionId = this.getSessionId();
 
-    const data = {...customData, auroraaiAccessToken};
+    const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
 
     socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
   }
@@ -631,6 +623,16 @@ class Widget extends Component {
     event.target.message.value = '';
   }
 
+  getAuroraaiAccesstoken() {
+    const { auroraaiSessionTransfer } = this.props;
+    if (auroraaiSessionTransfer) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('auroraai_access_token') ?? undefined;
+    }
+
+    return undefined;
+  }
+
   render() {
     return (
       <WidgetLayout
@@ -672,8 +674,7 @@ const mapStateToProps = state => ({
   oldUrl: state.behavior.get('oldUrl'),
   pageChangeCallbacks: state.behavior.get('pageChangeCallbacks'),
   domHighlight: state.metadata.get('domHighlight'),
-  messages: state.messages,
-  auroraaiAccessToken: state.behavior.get('auroraaiAccessToken')
+  messages: state.messages
 });
 
 Widget.propTypes = {
@@ -714,7 +715,7 @@ Widget.propTypes = {
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
   messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-  auroraaiAccessToken: PropTypes.string
+  auroraaiSessionTransfer: PropTypes.bool
 };
 
 Widget.defaultProps = {
@@ -729,6 +730,7 @@ Widget.defaultProps = {
   oldUrl: '',
   disableTooltips: true,
   resetSessionOnClose: true,
+  auroraaiSessionTransfer: false,
   defaultHighlightClassname: '',
   defaultHighlightCss: 'animation: 0.5s linear infinite alternate default-botfront-blinker-animation; outline-style: solid;',
   // unfortunately it looks like outline-style is not an animatable property on Safari
