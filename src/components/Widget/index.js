@@ -66,8 +66,9 @@ class Widget extends Component {
 
     const params = new URLSearchParams(window.location.search);
     const auroraaiAccessToken = params.get('auroraai_access_token');
-    dispatch(setAuroraaiAccessToken(auroraaiAccessToken));
-    console.log('auroraai_access_token', params.has('auroraai_access_token'));
+
+    // directly dispatching this event breaks automatic opening of the widget with an active session
+    setTimeout(() => dispatch(setAuroraaiAccessToken(auroraaiAccessToken)));
 
     this.intervalId = setInterval(() => dispatch(evalUrl(window.location.href)), 500);
     if (connectOn === 'mount') {
