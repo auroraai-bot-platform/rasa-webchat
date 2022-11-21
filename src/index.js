@@ -158,6 +158,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
           defaultHighlightCss={props.defaultHighlightCss}
           defaultHighlightAnimation={props.defaultHighlightAnimation}
           defaultHighlightClassname={props.defaultHighlightClassname}
+          auroraaiSessionTransfer={props.auroraaiSessionTransfer}
         />
       </ThemeContext.Provider>
     </Provider>
@@ -212,7 +213,8 @@ ConnectedWidget.propTypes = {
   userTextColor: PropTypes.string,
   userBackgroundColor: PropTypes.string,
   assistTextColor: PropTypes.string,
-  assistBackgoundColor: PropTypes.string
+  assistBackgoundColor: PropTypes.string,
+  auroraaiSessionTransfer: PropTypes.bool
 };
 
 ConnectedWidget.defaultProps = {
@@ -259,7 +261,8 @@ ConnectedWidget.defaultProps = {
   userTextColor: '',
   userBackgroundColor: '',
   assistTextColor: '',
-  assistBackgoundColor: ''
+  assistBackgoundColor: '',
+  auroraaiSessionTransfer: false
 };
 
 export default ConnectedWidget;

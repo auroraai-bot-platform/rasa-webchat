@@ -40,6 +40,7 @@ import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
 import { isVideo, isImage, isButtons, isText, isCarousel } from './msgProcessor';
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
+import { setAuroraaiAccessToken } from '../../store/actions';
 
 class Widget extends Component {
   constructor(props) {
@@ -68,7 +69,6 @@ class Widget extends Component {
       this.initializeWidget();
       return;
     }
-
 
     const localSession = getLocalSession(storage, SESSION_NAME);
     const lastUpdate = localSession ? localSession.lastUpdate : 0;
@@ -468,9 +468,11 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
+      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
+
       // eslint-disable-next-line no-console
       console.log('sending init payload', sessionId);
-      socket.emit('user_uttered', { message: initPayload, customData, session_id: sessionId });
+      socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
       dispatch(initialize());
     }
   }
@@ -491,7 +493,10 @@ class Widget extends Component {
 
       if (!sessionId) return;
 
-      socket.emit('user_uttered', { message: tooltipPayload, customData, session_id: sessionId });
+
+      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
+
+      socket.emit('user_uttered', { message: tooltipPayload, customData: data, session_id: sessionId });
 
       dispatch(triggerTooltipSent(tooltipPayload));
       dispatch(initialize());
@@ -557,7 +562,9 @@ class Widget extends Component {
     const { socket, customData, initPayload } = this.props;
     const sessionId = this.getSessionId();
 
-    socket.emit('user_uttered', { message: initPayload, customData, session_id: sessionId });
+    const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
+
+    socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
   }
 
   toggleFullScreen() {
@@ -614,6 +621,16 @@ class Widget extends Component {
       this.props.dispatch(emitUserMessage(userUttered));
     }
     event.target.message.value = '';
+  }
+
+  getAuroraaiAccesstoken() {
+    const { auroraaiSessionTransfer } = this.props;
+    if (auroraaiSessionTransfer) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('auroraai_access_token') ?? undefined;
+    }
+
+    return undefined;
   }
 
   render() {
@@ -697,7 +714,8 @@ Widget.propTypes = {
   defaultHighlightAnimation: PropTypes.string,
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
-  messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map)
+  messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
+  auroraaiSessionTransfer: PropTypes.bool
 };
 
 Widget.defaultProps = {
@@ -712,6 +730,7 @@ Widget.defaultProps = {
   oldUrl: '',
   disableTooltips: true,
   resetSessionOnClose: true,
+  auroraaiSessionTransfer: false,
   defaultHighlightClassname: '',
   defaultHighlightCss: 'animation: 0.5s linear infinite alternate default-botfront-blinker-animation; outline-style: solid;',
   // unfortunately it looks like outline-style is not an animatable property on Safari

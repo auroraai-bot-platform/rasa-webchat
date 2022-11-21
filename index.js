@@ -199,7 +199,8 @@ export const rasaWebchatProDefaultTypes = {
   tooltipDelay: 500,
   withRules: true,
   rules: null,
-  triggerEventListenerUpdateRate: 500
+  triggerEventListenerUpdateRate: 500,
+  auroraaiSessionTransfer: false
 };
 
 export default React.forwardRef((props, ref) => (
