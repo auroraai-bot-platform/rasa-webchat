@@ -30,3 +30,7 @@ export function isButtons(message) {
     && Object.keys(message).includes('text')
     && (Object.keys(message).includes('quick_replies') || Object.keys(message).includes('buttons'));
 }
+
+export function isHandoff(message) {
+  return Object.keys(message).length === 3 && Object.keys(message).includes('handoff_host');
+}

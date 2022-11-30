@@ -37,7 +37,7 @@ import {
 } from 'actions';
 import { safeQuerySelectorAll } from 'utils/dom';
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
-import { isVideo, isImage, isButtons, isText, isCarousel } from './msgProcessor';
+import { isVideo, isImage, isButtons, isText, isCarousel, isHandoff } from './msgProcessor';
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
 import { setAuroraaiAccessToken } from '../../store/actions';
@@ -601,6 +601,8 @@ class Widget extends Component {
           image: element.src
         })
       );
+    } else if (isHandoff(messageClean)) {
+      this.props.dispatch(addResponseMessage(messageClean.title));
     } else {
       // some custom message
       const props = messageClean;
