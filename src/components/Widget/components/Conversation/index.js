@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Header from './components/Header';
@@ -7,25 +7,23 @@ import Sender from './components/Sender';
 import './style.scss';
 import ClosePopup from './components/ClosePopup';
 
-const Conversation = props => {
-  const [showClosePopup, setShowClosePopup] = useState(false)
+const Conversation = (props) => {
+  const [showClosePopup, setShowClosePopup] = useState(false);
 
   function toggleShowClosePopup() {
-    setShowClosePopup(!showClosePopup)
+    setShowClosePopup(!showClosePopup);
   }
-
   return (
     <div className="rw-conversation-container">
-      {
-        showClosePopup && 
+      {showClosePopup && (
         <div>
-          <ClosePopup 
-          saveChatToFile={props.saveChatToFile}
-          toggleClosePopup={toggleShowClosePopup}
-          toggleChat={props.toggleChat}
+          <ClosePopup
+            saveChatToFile={props.saveChatToFile}
+            toggleClosePopup={toggleShowClosePopup}
+            toggleChat={props.toggleChat}
           />
         </div>
-      }
+      )}
       <Header
         title={props.title}
         subtitle={props.subtitle}
@@ -76,7 +74,7 @@ Conversation.propTypes = {
   customComponent: PropTypes.func,
   showMessageDate: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool
+  showSaveButton: PropTypes.bool,
 };
 
 export default Conversation;

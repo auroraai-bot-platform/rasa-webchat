@@ -24,42 +24,41 @@ const Header = ({
   profileAvatar,
   toggleClosePopup,
   saveChatToFile,
-  showSaveButton
+  showSaveButton,
 }) => {
-
   showCloseButton = true;
 
   const { mainColor } = useContext(ThemeContext);
 
   return (
     <div className="rw-header-and-loading">
-      <div style={{ backgroundColor: mainColor }} className={`rw-header ${subtitle ? 'rw-with-subtitle' : ''}`}>
-        {
-          profileAvatar ? (
-            <img src={profileAvatar} className="rw-avatar" alt="chat avatar"  />
-          ) : (
-            <SVG src={logo} className="rw-avatar" alt="chat avatar" />
-          )
-        }
+      <div
+        style={{ backgroundColor: mainColor }}
+        className={`rw-header ${subtitle ? 'rw-with-subtitle' : ''}`}
+      >
+        {profileAvatar ? (
+          <img src={profileAvatar} className="rw-avatar" alt="chat avatar" />
+        ) : (
+          <SVG src={logo} className="rw-avatar" alt="chat avatar" />
+        )}
         <div className="rw-header-buttons">
-          {
-            showSaveButton &&
-            <button className='rw-save-button' onClick={saveChatToFile}>
+          {showSaveButton && (
+            <button className="rw-save-button" onClick={saveChatToFile}>
               Tallenna
             </button>
-          }
-          {
-            showFullScreenButton &&
+          )}
+          {showFullScreenButton && (
             <button className="rw-toggle-fullscreen-button" onClick={toggleFullScreen}>
               <img
-                className={`rw-toggle-fullscreen ${fullScreenMode ? 'rw-fullScreenExitImage' : 'rw-fullScreenImage'}`}
+                className={`rw-toggle-fullscreen ${
+                  fullScreenMode ? 'rw-fullScreenExitImage' : 'rw-fullScreenImage'
+                }`}
                 src={fullScreenMode ? fullscreenExit : fullscreen}
                 alt="toggle fullscreen"
               />
             </button>
-          }
-          {
-            showCloseButton &&
+          )}
+          {showCloseButton && (
             <button className="rw-close-button" onClick={toggleClosePopup}>
               <SVG
                 className={`rw-close ${closeImage ? '' : 'rw-default'}`}
@@ -67,20 +66,18 @@ const Header = ({
                 alt="close"
               />
             </button>
-          }
+          )}
         </div>
         {/* <SVG src={logo} width={24} height="auto" title="Logo" class="rw-logo"/> */}
 
         <h4 className={`rw-title ${(profileAvatar || logo) && 'rw-with-avatar'}`}>{title}</h4>
-        {subtitle && <span className={(profileAvatar || logo) && 'rw-with-avatar'}>{subtitle}</span>}
+        {subtitle && (
+          <span className={(profileAvatar || logo) && 'rw-with-avatar'}>{subtitle}</span>
+        )}
       </div>
-      {
-        !connected &&
-        <span className="rw-loading">
-          {connectingText}
-        </span>
-      }
-    </div>);
+      {!connected && <span className="rw-loading">{connectingText}</span>}
+    </div>
+  );
 };
 
 Header.propTypes = {
@@ -97,7 +94,7 @@ Header.propTypes = {
   profileAvatar: PropTypes.string,
   toggleClosePopup: PropTypes.func,
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool
+  showSaveButton: PropTypes.bool,
 };
 
 export default Header;
