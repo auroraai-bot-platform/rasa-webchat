@@ -208,9 +208,9 @@ const Launcher = ({
         )}
 
         {openLauncherImage ? (
-          <img src={openLauncherImage} class="rw-open-launcher-image" style={{ width: '24px' }} height="auto" alt="Open Chat"  />
+          <img src={openLauncherImage} class="rw-open-launcher-image" style={{ width: '24px' }} /*height="auto"*/ alt="Open Chat"  />
         ) : (
-          <SVG src={logo} width={24} height="auto" alt="Open Chat" className="rw-open-launcher rw-logo" />
+          <SVG src={logo} width={24} /*height="auto"*/ alt="Open Chat" className="rw-open-launcher rw-logo" />
         )}
         {showTooltip && lastMessage && lastMessage.get('sender') === 'response' && (referenceElement ? renderPlacedTooltip() : renderToolTip())}
       </div>

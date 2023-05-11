@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-
 
 import logo from 'assets/Hytebotti.svg';
 import close from 'assets/Close.svg';
@@ -22,11 +21,16 @@ const Header = ({
   connected,
   connectingText,
   closeImage,
-  profileAvatar
+  profileAvatar,
+  toggleClosePopup,
+  saveChatToFile,
+  showSaveButton
 }) => {
+
   showCloseButton = true;
 
   const { mainColor } = useContext(ThemeContext);
+
   return (
     <div className="rw-header-and-loading">
       <div style={{ backgroundColor: mainColor }} className={`rw-header ${subtitle ? 'rw-with-subtitle' : ''}`}>
@@ -39,6 +43,12 @@ const Header = ({
         }
         <div className="rw-header-buttons">
           {
+            showSaveButton &&
+            <button className='rw-save-button' onClick={saveChatToFile}>
+              Tallenna
+            </button>
+          }
+          {
             showFullScreenButton &&
             <button className="rw-toggle-fullscreen-button" onClick={toggleFullScreen}>
               <img
@@ -50,7 +60,7 @@ const Header = ({
           }
           {
             showCloseButton &&
-            <button className="rw-close-button" onClick={toggleChat}>
+            <button className="rw-close-button" onClick={toggleClosePopup}>
               <SVG
                 className={`rw-close ${closeImage ? '' : 'rw-default'}`}
                 src={closeImage || close}
@@ -84,7 +94,10 @@ Header.propTypes = {
   connected: PropTypes.bool,
   connectingText: PropTypes.string,
   closeImage: PropTypes.string,
-  profileAvatar: PropTypes.string
+  profileAvatar: PropTypes.string,
+  toggleClosePopup: PropTypes.func,
+  saveChatToFile: PropTypes.func,
+  showSaveButton: PropTypes.bool
 };
 
 export default Header;
