@@ -14,7 +14,7 @@ class Message extends PureComponent {
     const sender = this.props.message.get('sender');
     const text = this.props.message.get('text');
     const customCss = this.props.message.get('customCss') && this.props.message.get('customCss').toJS();
-
+    
     if (customCss && customCss.style === 'class') {
       customCss.css = customCss.css.replace(/^\./, '');
     }

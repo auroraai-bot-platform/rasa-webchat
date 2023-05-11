@@ -13,7 +13,7 @@ module.exports = {
   },
   devServer: {
     stats: 'errors-only',
-    host: process.env.HOST, // Defaults to `localhost`
+    host: "192.168.33.23", //process.env.HOST, // Defaults to `localhost`
     port: process.env.PORT, // Defaults to 8080
     open: true, // Open the page in browser
     contentBase: path.resolve(__dirname, '/lib')

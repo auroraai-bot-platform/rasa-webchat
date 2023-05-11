@@ -159,6 +159,8 @@ const ConnectedWidget = forwardRef((props, ref) => {
           defaultHighlightAnimation={props.defaultHighlightAnimation}
           defaultHighlightClassname={props.defaultHighlightClassname}
           auroraaiSessionTransfer={props.auroraaiSessionTransfer}
+          saveChatToFile={props.saveChatToFile}
+          showSaveButton={props.showSaveButton}
         />
       </ThemeContext.Provider>
     </Provider>
@@ -214,7 +216,9 @@ ConnectedWidget.propTypes = {
   userBackgroundColor: PropTypes.string,
   assistTextColor: PropTypes.string,
   assistBackgoundColor: PropTypes.string,
-  auroraaiSessionTransfer: PropTypes.bool
+  auroraaiSessionTransfer: PropTypes.bool,
+  saveChatToFile: PropTypes.func,
+  showSaveButton: PropTypes.bool
 };
 
 ConnectedWidget.defaultProps = {
@@ -262,7 +266,8 @@ ConnectedWidget.defaultProps = {
   userBackgroundColor: '',
   assistTextColor: '',
   assistBackgoundColor: '',
-  auroraaiSessionTransfer: false
+  auroraaiSessionTransfer: false,
+  showSaveButton: true
 };
 
 export default ConnectedWidget;

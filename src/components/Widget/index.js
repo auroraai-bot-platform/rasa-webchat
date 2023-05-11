@@ -122,6 +122,8 @@ class Widget extends Component {
 
   sendMessage(payload, text = '', when = 'always', tooltipSelector = false) {
     const { dispatch, initialized, messages } = this.props;
+    console.log('payload: ', payload)
+    console.log('text: ', text)
     const emit = () => {
       const send = () => {
         dispatch(emitUserMessage(payload));
@@ -633,6 +635,29 @@ class Widget extends Component {
     return undefined;
   }
 
+  saveConversationTexts() {
+    const { storage } = this.props;
+    // Get the local session, check if there is an existing session_id
+    const localSession = getLocalSession(storage, SESSION_NAME);
+    if (localSession.conversation.length > 0) {
+      var conversations = [];
+      conversations.push(localSession.conversation.filter(
+          (item) => !item.hidden && item.type === 'text').map(
+            filteredItem => {
+              var timestamp = new Date(filteredItem.timestamp).toISOString()
+              const sender = filteredItem.sender === 'response' ? 'chat_bot' : 'user';
+              return '\n' + timestamp + ' ' + sender + ': ' + filteredItem.text
+            }
+      ).join(" "))
+      const element = document.createElement('a');
+      const file = new Blob([conversations.join("")], {type: 'text/plain'});
+      element.href = URL.createObjectURL(file);
+      element.download = 'chat_log_' + new Date().toLocaleString('fi-FI', { timeZone: 'UTC' }) + '.txt';
+      element.click(); 
+
+    }
+  }
+
   render() {
     return (
       <WidgetLayout
@@ -659,6 +684,8 @@ class Widget extends Component {
         displayUnreadCount={this.props.displayUnreadCount}
         showMessageDate={this.props.showMessageDate}
         tooltipPayload={this.props.tooltipPayload}
+        saveChatToFile={() => this.saveConversationTexts()}
+        showSaveButton={this.props.showSaveButton}
       />
     );
   }
@@ -715,7 +742,9 @@ Widget.propTypes = {
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
   messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-  auroraaiSessionTransfer: PropTypes.bool
+  auroraaiSessionTransfer: PropTypes.bool,
+  saveChatToFile: PropTypes.func,
+  showSaveButton: PropTypes.bool
 };
 
 Widget.defaultProps = {

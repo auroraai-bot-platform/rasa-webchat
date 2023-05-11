@@ -90,6 +90,23 @@
     font-family: $fontfamily;
     font-size: 14px;
   }
+
+  .#{$namespace}save-button {
+    font-family: $fontfamily;
+    border-color: $gray-6;
+    background-color: $gray-6;
+    border-radius: 20px;
+    padding: 2px 8px;
+    border-style: none;
+    height: 28px;
+    margin-top: 6px;
+    margin-right: 8px;
+  }
+  .#{$namespace}save-button:hover {
+    border-color: $gray-15;
+    background-color: $gray-15;
+    cursor: pointer;
+  }
 }
 
 .#{$namespace}widget-embedded {
