@@ -7,12 +7,14 @@ module.exports = {
   },
   parser: '@babel/eslint-parser',
   parserOptions: {
+    // parser: '@babel/eslint-parser',
     ecmaFeatures: {
       experimentalObjectRestSpread: true,
       jsx: true,
     },
     sourceType: 'module',
   },
+  // remove this later
   babelOptions: {
     presets: '@babel/preset-react',
   },
@@ -22,7 +24,7 @@ module.exports = {
     __DEV__: true,
   },
   rules: {
-    'comma-dangle': ['error', 'never'],
+    // 'comma-dangle': ['error', 'never'],
     'no-invalid-this': 'off',
     'no-return-assign': 'off',
     'no-param-reassign': 'off',
@@ -40,6 +42,7 @@ module.exports = {
     'import/default': 'error',
     'import/namespace': 'error',
     'import/no-absolute-path': 'error',
+    'linebreak-style': ['error', 'windows'],
   },
   settings: {
     'import/resolver': {
