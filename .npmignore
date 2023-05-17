@@ -9,3 +9,10 @@ circle.yml
 .eslintrc.js
 .eslintignore
 webpack.config.js
+/github
+/dev
+/.vscode
+.prettierignore
+.prettierrc
+CONTRIBUTING.md
+commitlint.config.js
