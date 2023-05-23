@@ -13,3 +13,4 @@ module
 # Test files
 coverage
 *.tgz
+.npmrc
