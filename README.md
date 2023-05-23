@@ -99,16 +99,16 @@ About images: `width` and `height` define the size in pixels that images in mess
 
 ### As a React component
 
-Install the [npm package](https://npmjs.com/rasa-webchat):
-
-```bash
-npm install rasa-webchat
-```
-
-or install the auroraai-bot-platform/rasa-webchat (currently available only in GitHub)
+Install the auroraai-bot-platform/rasa-webchat (currently available only in GitHub)
 
 ```bash
 npm install https://github.com/auroraai-bot-platform/rasa-webchat
+```
+
+and to install a specific branch add '/tree/' and the branch name to the end of the url, like
+
+```bash
+npm install https://github.com/auroraai-bot-platform/rasa-webchat/tree/mybranch
 ```
 
 Then:
@@ -129,9 +129,6 @@ function CustomWidget = () => {
   )
 }
 ```
-
--   Make sure to have the prop `embedded`
-    set to `true` if you don't want to see the launcher.
 
 ## Parameters
 
