@@ -11,9 +11,7 @@ class RasaWebchatProWithRules extends React.Component {
     const { connectOn } = props;
     let { withRules } = props;
     if (connectOn === 'open' && withRules === true) {
-      throw new Error(
-        "You can't use rules and connect on open, you have to use connect on mount"
-      );
+      throw new Error("You can't use rules and connect on open, you have to use connect on mount");
     }
     this.webchatRef = null;
     if (withRules === undefined) {
@@ -21,7 +19,7 @@ class RasaWebchatProWithRules extends React.Component {
     }
     this.state = {
       propsRetrieved: !withRules,
-      rulesApplied: !withRules
+      rulesApplied: !withRules,
     };
     this.setRef = this.setRef.bind(this);
     this.handleSessionConfirm = this.handleSessionConfirm.bind(this);
@@ -44,12 +42,12 @@ class RasaWebchatProWithRules extends React.Component {
     const { innerRef } = this.props;
     this.setState({
       // The OR makes it work even without the augmented webchat channel
-      propsRetrieved: { ...sessionObject.props }
+      propsRetrieved: { ...sessionObject.props },
     });
     if (
       ((innerRef && innerRef.current) || this.webchatRef.updateRules) &&
-              sessionObject.props &&
-              sessionObject.props.rules
+      sessionObject.props &&
+      sessionObject.props.rules
     ) {
       setTimeout(() => {
         if (innerRef && innerRef.current) {
@@ -75,20 +73,24 @@ class RasaWebchatProWithRules extends React.Component {
     return (
       <div
         style={{ display: propsRetrieved ? undefined : 'none' }}
-        className={this.props.embedded || (propsToApply && propsToApply.embedded) ? 'rw-pro-widget-embedded' : ''}
+        className={
+          this.props.embedded || (propsToApply && propsToApply.embedded)
+            ? 'rw-pro-widget-embedded'
+            : ''
+        }
       >
         <RasaWebchatPro
           ref={this.setRef}
           {...{
             ...propsToApply,
-            ...this.props
+            ...this.props,
           }}
           onSocketEvent={
             withRules
               ? {
-                session_confirm: this.handleSessionConfirm,
-                ...onSocketEvent
-              }
+                  session_confirm: this.handleSessionConfirm,
+                  ...onSocketEvent,
+                }
               : { ...onSocketEvent }
           }
         />
@@ -146,24 +148,25 @@ export const rasaWebchatProTypes = {
           PropTypes.shape({
             param: PropTypes.string,
             value: PropTypes.string,
-            sendAsEntity: PropTypes.bool
+            sendAsEntity: PropTypes.bool,
           })
         ),
         eventListeners: PropTypes.arrayOf(
           PropTypes.shape({
             selector: PropTypes.string.isRequired,
-            event: PropTypes.string.isRequired
+            event: PropTypes.string.isRequired,
           })
-        )
-      })
+        ),
+      }),
     })
   ),
-  triggerEventListenerUpdateRate: PropTypes.number
+  triggerEventListenerUpdateRate: PropTypes.number,
+  showSaveButton: PropTypes.bool,
 };
 
 RasaWebchatProWithRules.propTypes = {
   ...rasaWebchatProTypes,
-  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.object })])
+  innerRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.object })]),
 };
 
 export const rasaWebchatProDefaultTypes = {
@@ -182,7 +185,7 @@ export const rasaWebchatProDefaultTypes = {
   badge: 0,
   embedded: false,
   params: {
-    storage: 'local'
+    storage: 'local',
   },
   docViewer: false,
   showCloseButton: true,
@@ -200,7 +203,8 @@ export const rasaWebchatProDefaultTypes = {
   withRules: true,
   rules: null,
   triggerEventListenerUpdateRate: 500,
-  auroraaiSessionTransfer: false
+  auroraaiSessionTransfer: false,
+  showSaveButton: true,
 };
 
 export default React.forwardRef((props, ref) => (
@@ -214,7 +218,7 @@ export const selfMount = (props, element = null) => {
       node.setAttribute('id', 'rasaWebchatPro');
       document.body.appendChild(node);
     }
-    const mountElement = element || document.getElementById('rasaWebchatPro')
+    const mountElement = element || document.getElementById('rasaWebchatPro');
     const webchatPro = React.createElement(RasaWebchatProWithRules, props);
     ReactDOM.render(webchatPro, mountElement);
   };
