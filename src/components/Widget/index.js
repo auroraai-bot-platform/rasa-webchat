@@ -33,7 +33,7 @@ import {
   evalUrl,
   setCustomCss,
   dropMessages,
-  resetSessionId
+  resetSessionId,
 } from 'actions';
 import { safeQuerySelectorAll } from 'utils/dom';
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
@@ -52,9 +52,8 @@ class Widget extends Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.getSessionId = this.getSessionId.bind(this);
     this.intervalId = null;
-    this.eventListenerCleaner = () => { };
+    this.eventListenerCleaner = () => {};
   }
-
 
   componentDidMount() {
     const { connectOn, autoClearCache, storage, dispatch, defaultHighlightAnimation } = this.props;
@@ -196,16 +195,15 @@ class Widget extends Component {
   }
 
   propagateMetadata(metadata) {
+    const { dispatch } = this.props;
     const {
-      dispatch
-    } = this.props;
-    const { linkTarget,
+      linkTarget,
       userInput,
       pageChangeCallbacks,
       domHighlight,
       forceOpen,
       forceClose,
-      pageEventCallbacks
+      pageEventCallbacks,
     } = metadata;
     if (linkTarget) {
       dispatch(setLinkTarget(linkTarget));
@@ -328,14 +326,17 @@ class Widget extends Component {
           } else {
             const rectangle = elements[0].getBoundingClientRect();
 
-            const ElemIsInViewPort = (
+            const ElemIsInViewPort =
               rectangle.top >= 0 &&
-                rectangle.left >= 0 &&
-                rectangle.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rectangle.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
+              rectangle.left >= 0 &&
+              rectangle.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+              rectangle.right <= (window.innerWidth || document.documentElement.clientWidth);
             if (!ElemIsInViewPort) {
-              elements[0].scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
+              elements[0].scrollIntoView({
+                block: 'center',
+                inline: 'nearest',
+                behavior: 'smooth',
+              });
             }
           }
         }, 50);
@@ -346,7 +347,7 @@ class Widget extends Component {
   checkVersionBeforePull() {
     const { storage } = this.props;
     const localSession = getLocalSession(storage, SESSION_NAME);
-    if (localSession && (localSession.version !== 'PACKAGE_VERSION_TO_BE_REPLACED')) {
+    if (localSession && localSession.version !== 'PACKAGE_VERSION_TO_BE_REPLACED') {
       storage.removeItem(SESSION_NAME);
     }
   }
@@ -360,14 +361,13 @@ class Widget extends Component {
       initialized,
       connectOn,
       tooltipPayload,
-      tooltipDelay
+      tooltipDelay,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
 
       socket.on('bot_uttered', (botUttered) => {
         // botUttered.attachment.payload.elements = [botUttered.attachment.payload.elements];
-        // console.log(botUttered);
         this.handleBotUtterance(botUttered);
       });
 
@@ -383,9 +383,8 @@ class Widget extends Component {
 
       // When session_confirm is received from the server:
       socket.on('session_confirm', (sessionObject) => {
-        const remoteId = (sessionObject && sessionObject.session_id)
-          ? sessionObject.session_id
-          : sessionObject;
+        const remoteId =
+          sessionObject && sessionObject.session_id ? sessionObject.session_id : sessionObject;
 
         // eslint-disable-next-line no-console
         console.log(`session_confirm:${socket.socket.id} session_id:${remoteId}`);
@@ -420,7 +419,8 @@ class Widget extends Component {
               dispatch(emitUserMessage(message));
             }
           }
-        } if (connectOn === 'mount' && tooltipPayload) {
+        }
+        if (connectOn === 'mount' && tooltipPayload) {
           this.tooltipTimeout = setTimeout(() => {
             this.trySendTooltipPayload();
           }, parseInt(tooltipDelay, 10));
@@ -456,7 +456,7 @@ class Widget extends Component {
       isChatVisible,
       embedded,
       connected,
-      dispatch
+      dispatch,
     } = this.props;
 
     // Send initial payload when chat is opened or widget is shown
@@ -468,35 +468,35 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
-      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
+      const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
       // eslint-disable-next-line no-console
       console.log('sending init payload', sessionId);
-      socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
+      socket.emit('user_uttered', {
+        message: initPayload,
+        customData: data,
+        session_id: sessionId,
+      });
       dispatch(initialize());
     }
   }
 
   trySendTooltipPayload() {
-    const {
-      tooltipPayload,
-      socket,
-      customData,
-      connected,
-      isChatOpen,
-      dispatch,
-      tooltipSent
-    } = this.props;
+    const { tooltipPayload, socket, customData, connected, isChatOpen, dispatch, tooltipSent } =
+      this.props;
 
     if (connected && !isChatOpen && !tooltipSent.get(tooltipPayload)) {
       const sessionId = this.getSessionId();
 
       if (!sessionId) return;
 
+      const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
-      const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
-
-      socket.emit('user_uttered', { message: tooltipPayload, customData: data, session_id: sessionId });
+      socket.emit('user_uttered', {
+        message: tooltipPayload,
+        customData: data,
+        session_id: sessionId,
+      });
 
       dispatch(triggerTooltipSent(tooltipPayload));
       dispatch(initialize());
@@ -504,13 +504,7 @@ class Widget extends Component {
   }
 
   toggleConversation() {
-    const {
-      initialized,
-      isChatOpen,
-      dispatch,
-      disableTooltips,
-      resetSessionOnClose
-    } = this.props;
+    const { initialized, isChatOpen, dispatch, disableTooltips, resetSessionOnClose } = this.props;
 
     if (resetSessionOnClose) {
       if (isChatOpen) {
@@ -524,7 +518,6 @@ class Widget extends Component {
     }
 
     if (isChatOpen && this.delayedMessage) {
-
       if (!disableTooltips) dispatch(showTooltip(true));
       clearTimeout(this.messageDelayTimeout);
       this.dispatchMessage(this.delayedMessage);
@@ -562,7 +555,7 @@ class Widget extends Component {
     const { socket, customData, initPayload } = this.props;
     const sessionId = this.getSessionId();
 
-    const data = {...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken()};
+    const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
     socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
   }
@@ -582,15 +575,13 @@ class Widget extends Component {
     } else if (isButtons(messageClean)) {
       this.props.dispatch(addButtons(messageClean));
     } else if (isCarousel(messageClean)) {
-      this.props.dispatch(
-        addCarousel(messageClean)
-      );
+      this.props.dispatch(addCarousel(messageClean));
     } else if (isVideo(messageClean)) {
       const element = messageClean.attachment.payload;
       this.props.dispatch(
         addVideoSnippet({
           title: element.title,
-          video: element.src
+          video: element.src,
         })
       );
     } else if (isImage(messageClean)) {
@@ -598,7 +589,7 @@ class Widget extends Component {
       this.props.dispatch(
         addImageSnippet({
           title: element.title,
-          image: element.src
+          image: element.src,
         })
       );
     } else {
@@ -633,12 +624,37 @@ class Widget extends Component {
     return undefined;
   }
 
+  saveConversationTexts() {
+    const { storage } = this.props;
+    // Get the local session, check if there is an existing session_id
+    const localSession = getLocalSession(storage, SESSION_NAME);
+    if (localSession.conversation.length > 0) {
+      var conversations = [];
+      conversations.push(
+        localSession.conversation
+          .filter((item) => !item.hidden && item.type === 'text')
+          .map((filteredItem) => {
+            var timestamp = new Date(filteredItem.timestamp).toISOString();
+            const sender = filteredItem.sender === 'response' ? 'chat_bot' : 'user';
+            return '\n' + timestamp + ' ' + sender + ': ' + filteredItem.text;
+          })
+          .join(' ')
+      );
+      const element = document.createElement('a');
+      const file = new Blob([conversations.join('')], { type: 'text/plain' });
+      element.href = URL.createObjectURL(file);
+      element.download =
+        'chat_log_' + new Date().toLocaleString('fi-FI', { timeZone: 'UTC' }) + '.txt';
+      element.click();
+    }
+  }
+
   render() {
     return (
       <WidgetLayout
         toggleChat={() => this.toggleConversation()}
         toggleFullScreen={() => this.toggleFullScreen()}
-        onSendMessage={event => this.handleMessageSubmit(event)}
+        onSendMessage={(event) => this.handleMessageSubmit(event)}
         title={this.props.title}
         subtitle={this.props.subtitle}
         customData={this.props.customData}
@@ -659,12 +675,14 @@ class Widget extends Component {
         displayUnreadCount={this.props.displayUnreadCount}
         showMessageDate={this.props.showMessageDate}
         tooltipPayload={this.props.tooltipPayload}
+        saveChatToFile={() => this.saveConversationTexts()}
+        showSaveButton={this.props.showSaveButton}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   initialized: state.behavior.get('initialized'),
   connected: state.behavior.get('connected'),
   isChatOpen: state.behavior.get('isChatOpen'),
@@ -674,7 +692,7 @@ const mapStateToProps = state => ({
   oldUrl: state.behavior.get('oldUrl'),
   pageChangeCallbacks: state.behavior.get('pageChangeCallbacks'),
   domHighlight: state.metadata.get('domHighlight'),
-  messages: state.messages
+  messages: state.messages,
 });
 
 Widget.propTypes = {
@@ -715,7 +733,9 @@ Widget.propTypes = {
   defaultHighlightCss: PropTypes.string,
   defaultHighlightClassname: PropTypes.string,
   messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
-  auroraaiSessionTransfer: PropTypes.bool
+  auroraaiSessionTransfer: PropTypes.bool,
+  saveChatToFile: PropTypes.func,
+  showSaveButton: PropTypes.bool,
 };
 
 Widget.defaultProps = {
@@ -732,7 +752,8 @@ Widget.defaultProps = {
   resetSessionOnClose: true,
   auroraaiSessionTransfer: false,
   defaultHighlightClassname: '',
-  defaultHighlightCss: 'animation: 0.5s linear infinite alternate default-botfront-blinker-animation; outline-style: solid;',
+  defaultHighlightCss:
+    'animation: 0.5s linear infinite alternate default-botfront-blinker-animation; outline-style: solid;',
   // unfortunately it looks like outline-style is not an animatable property on Safari
   defaultHighlightAnimation: `@keyframes default-botfront-blinker-animation {
     0% {
@@ -747,7 +768,7 @@ Widget.defaultProps = {
     100% {
       outline-color: green;
     }
-  }`
+  }`,
 };
 
 export default connect(mapStateToProps, null, null, { forwardRef: true })(Widget);

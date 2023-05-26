@@ -2,8 +2,8 @@
 
 ## Customization
 
--   Logo needs to be dimensioned 24px \* 24px
--   The logo should be an SVG, which has the fill color not set or set to currentColor, to enable coloring via the font color of the parent element
+- Logo needs to be dimensioned 24px \* 24px
+- The logo should be an SVG, which has the fill color not set or set to currentColor, to enable coloring via the font color of the parent element
 
 ## Integration
 
@@ -11,18 +11,18 @@ Integration can be done via releasing an npm package or direct download of the i
 
 ## Install
 
--   install nodejs
--   clone this repository
--   run `npm ci` to install the dependencies
+- install nodejs
+- clone this repository
+- run `npm ci` to install the dependencies
 
 ## Run locally for testing or development
 
--   run `npm run dev`
+- run `npm run dev`
 
 ## Release
 
--   run `npm run build` to make a release build
--   the build is in `lib/index.js`
+- run `npm run build` to make a release build
+- the build is in `lib/index.js`
 
 ## Official documentation
 
@@ -44,15 +44,15 @@ Integration can be done via releasing an npm package or direct download of the i
 
 ## Features
 
--   Text Messages
--   Quick Replies
--   Images
--   Carousels
--   Markdown support
--   Persistent sessions
--   Typing indications
--   Smart delay between messages
--   Easy to import in a script tag or as a React Component
+- Text Messages
+- Quick Replies
+- Images
+- Carousels
+- Markdown support
+- Persistent sessions
+- Typing indications
+- Smart delay between messages
+- Easy to import in a script tag or as a React Component
 
 ## 🔥 Promo: check out our other cool open source project
 
@@ -68,27 +68,27 @@ In your `<body/>`:
 
 ```html
 <script>
-    !(function () {
-        let e = document.createElement('script'),
-            t = document.head || document.getElementsByTagName('head')[0];
-        (e.src = 'https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js'),
-            // Replace 1.x.x with the version that you want
-            (e.async = !0),
-            (e.onload = () => {
-                window.WebChat.default(
-                    {
-                        customData: { language: 'en' },
-                        socketUrl: 'https://bf-botfront.development.agents.botfront.cloud',
-                        profileAvatar: 'AVATARPATH',
-                        accentColor: 'COLORCODE',
-                        accentDarkColor: 'COLORCODE',
-                        // add other props here
-                    },
-                    null
-                );
-            }),
-            t.insertBefore(e, t.firstChild);
-    })();
+  !(function () {
+    let e = document.createElement('script'),
+      t = document.head || document.getElementsByTagName('head')[0];
+    (e.src = 'https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js'),
+      // Replace 1.x.x with the version that you want
+      (e.async = !0),
+      (e.onload = () => {
+        window.WebChat.default(
+          {
+            customData: { language: 'en' },
+            socketUrl: 'https://bf-botfront.development.agents.botfront.cloud',
+            profileAvatar: 'AVATARPATH',
+            accentColor: 'COLORCODE',
+            accentDarkColor: 'COLORCODE',
+            // add other props here
+          },
+          null
+        );
+      }),
+      t.insertBefore(e, t.firstChild);
+  })();
 </script>
 ```
 
@@ -154,6 +154,7 @@ function CustomWidget = () => {
 | `storage`              | `"local"`          | ⚠️ This is not a prop, it has to be passed inside the params object above. <br> Specifies the storage location of the conversation state in the browser. `"session"` defines the state to be stored in the session storage. The session storage persists on reload of the page, and is cleared after the browser or tab is closed, or when `sessionStorage.clear()`is called. `"local"` defines the state to be stored in the local stoage. The local storage persists after the the browser is closed, and is cleared when the cookies of the browser are cleared, or when `localStorage.clear()`is called. |
 | `customComponent`      | `null`             | Custom component to be used with custom responses. E.g.: `customComponent={ (messageData) => (<div>Custom React component</div>)}`. Please note that this can only be used if you call the webchat from a React application as you can't write a component in pure Javscript.                                                                                                                                                                                                                                                                                                                                |
 | `onWidgetEvent`        | `{}`               | call custom code on a specific widget event ( `onChatOpen`, `onChatClose`, `onChatHidden`, are available for now ), add a function to the desired object property in the props to have it react to the event.                                                                                                                                                                                                                                                                                                                                                                                                |
+| `showSaveButton`       | `true`             | Show save button in the header bar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 
 ### Additional Examples
 
@@ -161,10 +162,10 @@ function CustomWidget = () => {
 
 ```javascript
 (message) => {
-    let delay = message.length * 30;
-    if (delay > 2 * 1000) delay = 3 * 1000;
-    if (delay < 400) delay = 1000;
-    return delay;
+  let delay = message.length * 30;
+  if (delay > 2 * 1000) delay = 3 * 1000;
+  if (delay < 400) delay = 1000;
+  return delay;
 };
 ```
 
@@ -207,16 +208,16 @@ When reconnecting to an existing chat session, the bot will send a message conta
 
 ```jsx
 function myComponent() {
-    const webchatRef = useRef(null);
+  const webchatRef = useRef(null);
 
-    // triggered when something happens in your app
-    function callback() {
-        if (webchatRef.current && webchatRef.current.sendMessage) {
-            webchatRef.current.sendMessage('/myIntent{"entityName":"value"}');
-        }
+  // triggered when something happens in your app
+  function callback() {
+    if (webchatRef.current && webchatRef.current.sendMessage) {
+      webchatRef.current.sendMessage('/myIntent{"entityName":"value"}');
     }
+  }
 
-    return <RasaWebchat ref={webchatRef} />;
+  return <RasaWebchat ref={webchatRef} />;
 }
 ```
 

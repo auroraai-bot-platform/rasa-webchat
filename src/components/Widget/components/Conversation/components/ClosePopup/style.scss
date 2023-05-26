@@ -1,0 +1,51 @@
+@import "variables.scss";
+
+@import "common.scss";
+
+.#{$namespace}conversation-container {
+
+  .#{$namespace}overlay {
+    background-color: $black;
+    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    z-index: 2;
+  }
+  .#{$namespace}question-area {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    top: 10%;
+    text-align: center;
+    font: $chatheading-font;
+    color: $white;
+  }
+  .#{$namespace}question-text {
+    margin-bottom:10px;
+    font: $chatheading-font;
+    font-size: 18px;
+  }
+  .#{$namespace}question-button {
+    border-color: $white;
+    background-color: $white;
+    color: $accent;
+    border-radius: 20px;
+    padding: 9px 14px;
+    width: 40%;
+    margin-top:10px;
+    font: $speechbubble-font;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  .#{$namespace}question-button:hover {
+    background-color: $accent;
+    color: $white;
+    border-color: $accent;
+  }
+  .#{$namespace}question-save-button {
+    width: 55%;
+    margin-top: 40px;
+  }
+}
