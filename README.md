@@ -71,7 +71,7 @@ In your `<body/>`:
   !(function () {
     let e = document.createElement('script'),
       t = document.head || document.getElementsByTagName('head')[0];
-    (e.src = 'https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js'),
+    (e.src = 'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@1.x.x/lib/index.js'),
       // Replace 1.x.x with the version that you want
       (e.async = !0),
       (e.onload = () => {
@@ -99,22 +99,22 @@ About images: `width` and `height` define the size in pixels that images in mess
 
 ### As a React component
 
-Install the auroraai-bot-platform/rasa-webchat (currently available only in GitHub)
+Install the auroraai-bot-platform/rasa-webchat npm package
 
 ```bash
-npm install https://github.com/auroraai-bot-platform/rasa-webchat
+npm install @auroraai-bot-platform/rasa-webchat
 ```
 
-and to install a specific branch add '/tree/' and the branch name to the end of the url, like
+and to install a specific package version add '@' and version number to the end of the url
 
 ```bash
-npm install https://github.com/auroraai-bot-platform/rasa-webchat/tree/mybranch
+npm install @auroraai-bot-platform/rasa-webchat@1.x.x
 ```
 
 Then:
 
 ```javascript
-import Widget from 'rasa-webchat';
+import Widget from '@auroraai-bot-platform/rasa-webchat';
 
 function CustomWidget = () => {
   return (
@@ -184,14 +184,7 @@ onSocketEvent={{
 The `params` props only allows to specify custom image dimensions:
 
 ```jsx
-params={{
-        images: {
-          dims: {
-            width: 300,
-            height: 200
-          }
-        }
-      }}
+params={{ images: { dims: { width: 300, height: 200 } } }}
 ```
 
 ### Other features
