@@ -1,4 +1,4 @@
-# RASA WEBCHAT
+# RASA WEBCHAT - AURORAAI-BOT-PLATFORM/RASA-WEBCHAT
 
 ## Customization
 
@@ -38,8 +38,6 @@ Integration can be done via releasing an npm package or direct download of the i
 </div>
 <br />
 
-### ⚠️ Version 1.0.1 of the rasa webchat is made to work with version 2.3.x and 2.4.x of rasa. Use 1.0.0 for other rasa versions.
-
 <br />
 
 ## Features
@@ -71,8 +69,8 @@ In your `<body/>`:
   !(function () {
     let e = document.createElement('script'),
       t = document.head || document.getElementsByTagName('head')[0];
-    (e.src = 'https://cdn.jsdelivr.net/npm/rasa-webchat@1.x.x/lib/index.js'),
-      // Replace 1.x.x with the version that you want
+    (e.src = 'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat/lib/index.js'),
+      // For specific version use 'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@1.x.x/lib/index.js where replace the '1.x.x' with the version that you want
       (e.async = !0),
       (e.onload = () => {
         window.WebChat.default(
@@ -92,23 +90,29 @@ In your `<body/>`:
 </script>
 ```
 
-⚠️ We recommend adding a version tag to prevent breaking changes from major versions, e.g for version 1.0.0 https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.0/lib/index.js,
-however this will not work with versions below 1.0.0. If you do not specify a version, you will get served the latest available version of the rasa-webchat.
+⚠️ Leave the version tag, if you always want the latest version of the auroraai-bot-platform/rasa-webchat. But if you want to control when to update the widget, we recommend adding a version tag, e.g for version 1.0.0 https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@1.0.0/lib/index.js.
+The available versions of the auroraai-bot-platform/rasa-webchat can be seen in https://www.npmjs.com/package/@auroraai-bot-platform/rasa-webchat?activeTab=versions.
 
 About images: `width` and `height` define the size in pixels that images in messages are crop-scaled to. If not present, the image will scale to the maximum width of the container and the image.
 
 ### As a React component
 
-Install the [npm package](https://npmjs.com/rasa-webchat):
+Install the auroraai-bot-platform/rasa-webchat npm package
 
 ```bash
-npm install rasa-webchat
+npm install @auroraai-bot-platform/rasa-webchat
+```
+
+and to install a specific package version add '@' and version number to the end of the url
+
+```bash
+npm install @auroraai-bot-platform/rasa-webchat@1.x.x
 ```
 
 Then:
 
 ```javascript
-import Widget from 'rasa-webchat';
+import Widget from '@auroraai-bot-platform/rasa-webchat';
 
 function CustomWidget = () => {
   return (
@@ -118,13 +122,11 @@ function CustomWidget = () => {
       socketPath={"/socket.io/"}
       customData={{"language": "en"}} // arbitrary custom data. Stay minimal as this will be added to the socket
       title={"Title"}
+      subtitle=""
     />
   )
 }
 ```
-
-- Make sure to have the prop `embedded`
-  set to `true` if you don't want to see the launcher.
 
 ## Parameters
 
@@ -180,14 +182,7 @@ onSocketEvent={{
 The `params` props only allows to specify custom image dimensions:
 
 ```jsx
-params={{
-        images: {
-          dims: {
-            width: 300,
-            height: 200
-          }
-        }
-      }}
+params={{ images: { dims: { width: 300, height: 200 } } }}
 ```
 
 ### Other features
@@ -284,7 +279,7 @@ hierarchy:
 | .rw-imageFrame             | a container for sending images                                     |
 | .rw-videoFrame             | a container for sending video                                      |
 
-## Contributors
+## Original Rasa-webchat contributors
 
 [@PHLF](https://github.com/phlf)
 [@znat](https://github.com/znat)
