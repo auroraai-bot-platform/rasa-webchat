@@ -1,4 +1,4 @@
-# RASA WEBCHAT - AURORAAI-BOT-PLATFORM/RASA-WEBCHAT
+# AURORAAI-BOT-PLATFORM/RASA-WEBCHAT
 
 ## Customization
 
@@ -26,9 +26,9 @@ Integration can be done via releasing an npm package or direct download of the i
 
 ## Official documentation
 
-<h1 align="center">Rasa Webchat 💬</h1>
+<h1 align="center">Auroraai-bot-platform Rasa Webchat 💬</h1>
 <h5 align="center">
- A chat widget to deploy virtual assistants made with <a href="https://github.com/rasaHQ/rasa">Rasa</a> or <a href="https://github.com/botfront/botfront?utm_source=rasa_webchat">Botfront</a> on any website.
+ A chat widget to deploy virtual assistants made with <a href="https://github.com/auroraai-bot-platform/rasa">Rasa</a> or <a href="https://github.com/auroraai-bot-platform/botfront-aurora">Botfront</a> on any website.
 </h5>
 <br />
 <br />
