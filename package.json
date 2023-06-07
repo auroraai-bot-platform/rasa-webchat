@@ -1,8 +1,7 @@
 {
   "name": "@auroraai-bot-platform/rasa-webchat",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Chat web widget for React apps and Rasa Core chatbots",
-  "jsdelivr": "lib/index.js",
   "module": "module/index.js",
   "main": "lib/index.js",
   "repository": {
@@ -106,10 +105,6 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "bugs": {
-    "url": "https://github.com/auroraai-bot-platform/rasa-webchat/issues"
-  },
-  "homepage": "https://github.com/auroraai-bot-platform/rasa-webchat#readme",
   "directories": {
     "lib": "lib"
   }
