@@ -1,6 +1,6 @@
 {
   "name": "@auroraai-bot-platform/rasa-webchat",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Chat web widget for React apps and Rasa Core chatbots",
   "module": "module/index.js",
   "main": "lib/index.js",
@@ -31,7 +31,7 @@
     "prop-types": "15.8.1",
     "react-immutable-proptypes": "^2.2.0",
     "react-inlinesvg": "^2.3.0",
-    "react-markdown": "^8.0.7",
+    "react-markdown": "^5.0.3",
     "react-popper": "^2.2.5",
     "react-redux": "^7.2.6",
     "react-slick": "^0.28.1",
@@ -71,7 +71,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "html-webpack-plugin": "^4.5.2",
     "husky": "^7.0.4",
-    "jest": "^29.5.0",
+    "jest": "^25.5.4",
     "lodash-webpack-plugin": "^0.11.6",
     "prettier": "2.6.0",
     "prettier-eslint": "13.0.0",
@@ -89,8 +89,8 @@
     "webpack-dev-server": "^3.8.0"
   },
   "peerDependencies": {
-    "react": "^16.8.3 || ^17.0.0",
-    "react-dom": "^16.8.3 || ^17.0.0"
+    "react": "^16.8.3 || ^18.0.0",
+    "react-dom": "^16.8.3 || ^18.0.0"
   },
   "jest": {
     "verbose": true,
