@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Messages from './components/Messages';
 import Sender from './components/Sender';
 import './style.scss';
-import ClosePopup from './components/ClosePopup';
+import MenuView from './components/MenuView';
 
 const Conversation = (props) => {
   const [showMenuView, setShowMenuView] = useState(false);
@@ -17,7 +17,7 @@ const Conversation = (props) => {
     <div className="rw-conversation-container">
       {showMenuView && (
         <div>
-          <ClosePopup
+          <MenuView
             saveChatToFile={props.saveChatToFile}
             toggleMenuView={toggleShowMenuView}
             toggleChat={props.toggleChat}
