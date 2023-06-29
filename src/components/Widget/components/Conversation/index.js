@@ -8,18 +8,18 @@ import './style.scss';
 import ClosePopup from './components/ClosePopup';
 
 const Conversation = (props) => {
-  const [showClosePopup, setShowClosePopup] = useState(false);
+  const [showMenuView, setShowMenuView] = useState(false);
 
-  function toggleShowClosePopup() {
-    setShowClosePopup(!showClosePopup);
+  function toggleShowMenuView() {
+    setShowMenuView(!showMenuView);
   }
   return (
     <div className="rw-conversation-container">
-      {showClosePopup && (
+      {showMenuView && (
         <div>
           <ClosePopup
             saveChatToFile={props.saveChatToFile}
-            toggleClosePopup={toggleShowClosePopup}
+            toggleMenuView={toggleShowMenuView}
             toggleChat={props.toggleChat}
           />
         </div>
@@ -36,9 +36,8 @@ const Conversation = (props) => {
         connectingText={props.connectingText}
         closeImage={props.closeImage}
         profileAvatar={props.profileAvatar}
-        toggleClosePopup={toggleShowClosePopup}
-        saveChatToFile={props.saveChatToFile}
-        showSaveButton={props.showSaveButton}
+        toggleMenuView={toggleShowMenuView}
+        showMenuButton={props.showMenuButton}
       />
       <Messages
         profileAvatar={props.profileAvatar}
@@ -74,7 +73,7 @@ Conversation.propTypes = {
   customComponent: PropTypes.func,
   showMessageDate: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool,
+  showMenuButton: PropTypes.bool,
 };
 
 export default Conversation;

@@ -5,6 +5,7 @@ import logo from 'assets/Hytebotti.svg';
 import close from 'assets/Close.svg';
 import fullscreen from 'assets/fullscreen_button.svg';
 import fullscreenExit from 'assets/fullscreen_exit_button.svg';
+import threeDots from 'assets/three-dots-menu.svg';
 import './style.scss';
 import ThemeContext from '../../../../ThemeContext';
 
@@ -22,9 +23,8 @@ const Header = ({
   connectingText,
   closeImage,
   profileAvatar,
-  toggleClosePopup,
-  saveChatToFile,
-  showSaveButton,
+  toggleMenuView,
+  showMenuButton,
 }) => {
   showCloseButton = true;
 
@@ -42,9 +42,9 @@ const Header = ({
           <SVG src={logo} className="rw-avatar" alt="chat avatar" />
         )}
         <div className="rw-header-buttons">
-          {showSaveButton && (
-            <button className="rw-save-button" onClick={saveChatToFile}>
-              Tallenna
+          {showMenuButton && (
+            <button className="rw-menu-button" onClick={toggleMenuView}>
+              <SVG className={`rw-menu rw-default`} src={threeDots} alt="close" />
             </button>
           )}
           {showFullScreenButton && (
@@ -59,7 +59,7 @@ const Header = ({
             </button>
           )}
           {showCloseButton && (
-            <button className="rw-close-button" onClick={toggleClosePopup}>
+            <button className="rw-close-button" onClick={toggleChat}>
               <SVG
                 className={`rw-close ${closeImage ? '' : 'rw-default'}`}
                 src={closeImage || close}
@@ -92,9 +92,8 @@ Header.propTypes = {
   connectingText: PropTypes.string,
   closeImage: PropTypes.string,
   profileAvatar: PropTypes.string,
-  toggleClosePopup: PropTypes.func,
-  saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool,
+  toggleMenuView: PropTypes.func,
+  showMenuButton: PropTypes.bool,
 };
 
 export default Header;

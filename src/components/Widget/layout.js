@@ -43,7 +43,7 @@ const WidgetLayout = (props) => {
           showMessageDate={props.showMessageDate}
           inputTextFieldHint={props.inputTextFieldHint}
           saveChatToFile={props.saveChatToFile}
-          showSaveButton={props.showSaveButton}
+          showMenuButton={props.showMenuButton}
         />
       )}
       {!props.embedded && (
@@ -62,12 +62,12 @@ const WidgetLayout = (props) => {
   ) : null;
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isChatVisible: state.behavior.get('isChatVisible'),
   isChatOpen: state.behavior.get('isChatOpen'),
   disabledInput: state.behavior.get('disabledInput'),
   connected: state.behavior.get('connected'),
-  connectingText: state.behavior.get('connectingText')
+  connectingText: state.behavior.get('connectingText'),
 });
 
 WidgetLayout.propTypes = {
@@ -97,7 +97,7 @@ WidgetLayout.propTypes = {
   showMessageDate: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   tooltipPayload: PropTypes.string,
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool
+  showMenuButton: PropTypes.bool,
 };
 
 export default connect(mapStateToProps)(WidgetLayout);
