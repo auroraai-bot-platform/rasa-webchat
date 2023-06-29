@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-const ClosePopup = ({ saveChatToFile, toggleMenuView, toggleChat }) => {
+const MenuView = ({ saveChatToFile, toggleMenuView, toggleChat }) => {
   return (
     <div>
       <div className="rw-overlay"></div>
@@ -35,10 +35,10 @@ const ClosePopup = ({ saveChatToFile, toggleMenuView, toggleChat }) => {
   );
 };
 
-ClosePopup.propTypes = {
+MenuView.propTypes = {
   toggleChat: PropTypes.func,
   saveChatToFile: PropTypes.func,
   toggleMenuView: PropTypes.func,
 };
 
-export default ClosePopup;
+export default MenuView;
