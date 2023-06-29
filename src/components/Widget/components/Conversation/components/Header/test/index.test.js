@@ -10,7 +10,7 @@ describe('<Header />', () => {
     showFullScreenButton,
     saveToFile,
     togglePopup,
-    saveButton,
+    menuButton,
   }) =>
     shallow(
       <Header
@@ -19,7 +19,7 @@ describe('<Header />', () => {
         showFullScreenButton={showFullScreenButton}
         saveChatToFile={saveToFile}
         toggleClosePopup={togglePopup}
-        showSaveButton={saveButton}
+        showMenuButton={menuButton}
       />
     );
 
@@ -29,14 +29,14 @@ describe('<Header />', () => {
     const showFullScreenButton = true;
     const saveToFile = jest.fn();
     const togglePopup = jest.fn();
-    const saveButton = false;
+    const menuButton = false;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
       togglePopup,
-      saveButton,
+      menuButton,
     });
     headerComponent.find('.rw-toggle-fullscreen-button').simulate('click');
     expect(toggle).toBeCalled();
@@ -111,7 +111,7 @@ describe('<Header />', () => {
       togglePopup,
       saveButton,
     });
-    headerComponent.find('.rw-save-button').simulate('click');
+    headerComponent.find('.rw-menu-button').simulate('click');
     expect(saveToFile).toBeCalled();
   });
 

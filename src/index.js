@@ -13,14 +13,7 @@ import ThemeContext from '../src/components/Widget/ThemeContext';
 
 const ConnectedWidget = forwardRef((props, ref) => {
   class Socket {
-    constructor(
-      url,
-      customData,
-      path,
-      protocol,
-      protocolOptions,
-      onSocketEvent
-    ) {
+    constructor(url, customData, path, protocol, protocolOptions, onSocketEvent) {
       this.url = url;
       this.customData = customData;
       this.path = path;
@@ -68,9 +61,8 @@ const ConnectedWidget = forwardRef((props, ref) => {
       // this will be called first and will set those parameters for everyone to use.
       this.socket.on('session_confirm', (sessionObject) => {
         this.sessionConfirmed = true;
-        this.sessionId = (sessionObject && sessionObject.session_id)
-          ? sessionObject.session_id
-          : sessionObject;
+        this.sessionId =
+          sessionObject && sessionObject.session_id ? sessionObject.session_id : sessionObject;
       });
       this.onEvents.forEach((event) => {
         this.socket.on(event.event, event.callback);
@@ -101,8 +93,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
     instanceSocket.current = store.socket;
   }
 
-  const storage =
-    props.params.storage === 'session' ? sessionStorage : localStorage;
+  const storage = props.params.storage === 'session' ? sessionStorage : localStorage;
 
   if (!store || !store.current) {
     store.current = initStore(
@@ -118,12 +109,14 @@ const ConnectedWidget = forwardRef((props, ref) => {
   return (
     <Provider store={store.current}>
       <ThemeContext.Provider
-        value={{ mainColor: props.mainColor,
+        value={{
+          mainColor: props.mainColor,
           conversationBackgroundColor: props.conversationBackgroundColor,
           userTextColor: props.userTextColor,
           userBackgroundColor: props.userBackgroundColor,
           assistTextColor: props.assistTextColor,
-          assistBackgoundColor: props.assistBackgoundColor }}
+          assistBackgoundColor: props.assistBackgoundColor,
+        }}
       >
         <Widget
           ref={ref}
@@ -160,7 +153,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
           defaultHighlightClassname={props.defaultHighlightClassname}
           auroraaiSessionTransfer={props.auroraaiSessionTransfer}
           saveChatToFile={props.saveChatToFile}
-          showSaveButton={props.showSaveButton}
+          showMenuButton={props.showMenuButton}
         />
       </ThemeContext.Provider>
     </Provider>
@@ -204,7 +197,7 @@ ConnectedWidget.propTypes = {
     onChatOpen: PropTypes.func,
     onChatClose: PropTypes.func,
     onChatVisible: PropTypes.func,
-    onChatHidden: PropTypes.func
+    onChatHidden: PropTypes.func,
   }),
   disableTooltips: PropTypes.bool,
   resetSessionOnClose: PropTypes.bool,
@@ -218,7 +211,7 @@ ConnectedWidget.propTypes = {
   assistBackgoundColor: PropTypes.string,
   auroraaiSessionTransfer: PropTypes.bool,
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool
+  showMenuButton: PropTypes.bool,
 };
 
 ConnectedWidget.defaultProps = {
@@ -237,7 +230,7 @@ ConnectedWidget.defaultProps = {
   badge: 0,
   embedded: false,
   params: {
-    storage: 'local'
+    storage: 'local',
   },
   docViewer: false,
   showCloseButton: true,
@@ -256,7 +249,7 @@ ConnectedWidget.defaultProps = {
     onChatOpen: () => {},
     onChatClose: () => {},
     onChatVisible: () => {},
-    onChatHidden: () => {}
+    onChatHidden: () => {},
   },
   disableTooltips: true,
   resetSessionOnClose: true,
@@ -267,7 +260,7 @@ ConnectedWidget.defaultProps = {
   assistTextColor: '',
   assistBackgoundColor: '',
   auroraaiSessionTransfer: false,
-  showSaveButton: true
+  showMenuButton: true,
 };
 
 export default ConnectedWidget;

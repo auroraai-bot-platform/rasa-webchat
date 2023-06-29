@@ -676,7 +676,7 @@ class Widget extends Component {
         showMessageDate={this.props.showMessageDate}
         tooltipPayload={this.props.tooltipPayload}
         saveChatToFile={() => this.saveConversationTexts()}
-        showSaveButton={this.props.showSaveButton}
+        showMenuButton={this.props.showMenuButton}
       />
     );
   }
@@ -735,7 +735,7 @@ Widget.propTypes = {
   messages: ImmutablePropTypes.listOf(ImmutablePropTypes.map),
   auroraaiSessionTransfer: PropTypes.bool,
   saveChatToFile: PropTypes.func,
-  showSaveButton: PropTypes.bool,
+  showMenuButton: PropTypes.bool,
 };
 
 Widget.defaultProps = {

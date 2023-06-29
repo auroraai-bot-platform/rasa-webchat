@@ -91,18 +91,19 @@
     font-size: 14px;
   }
 
-  .#{$namespace}save-button {
+  .#{$namespace}menu-button {
     font-family: $fontfamily;
     border-color: $gray-6;
     background-color: $gray-6;
     border-radius: 20px;
-    padding: 2px 8px;
+    padding: 0px 4px;
     border-style: none;
     height: 28px;
     margin-top: 6px;
     margin-right: 8px;
+    transition: background-color 0.35s;
   }
-  .#{$namespace}save-button:hover {
+  .#{$namespace}menu-button:hover {
     border-color: $gray-15;
     background-color: $gray-15;
     cursor: pointer;
@@ -156,6 +157,12 @@
   @include header-icon-fs;
 
   stroke: currentColor;
+}
+
+.#{$namespace}menu {
+  @include header-icon-fs;
+  stroke: currentColor;
+  background-color: transparent !important;
 }
 
 @media screen and (max-width: 800px) {

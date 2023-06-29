@@ -161,7 +161,7 @@ export const rasaWebchatProTypes = {
     })
   ),
   triggerEventListenerUpdateRate: PropTypes.number,
-  showSaveButton: PropTypes.bool,
+  showMenuButton: PropTypes.bool,
 };
 
 RasaWebchatProWithRules.propTypes = {
@@ -204,7 +204,7 @@ export const rasaWebchatProDefaultTypes = {
   rules: null,
   triggerEventListenerUpdateRate: 500,
   auroraaiSessionTransfer: false,
-  showSaveButton: true,
+  showMenuButton: true,
 };
 
 export default React.forwardRef((props, ref) => (
