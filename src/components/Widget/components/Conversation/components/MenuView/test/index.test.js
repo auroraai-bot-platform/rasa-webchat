@@ -14,7 +14,7 @@ describe('<MenuView />', () => {
     const togglePopup = jest.fn();
     const toggle = jest.fn();
     const MenuView = createMenuView({ saveToFile, togglePopup, toggle });
-    MenuView.find('#close-popup-close-button').simulate('click');
+    MenuView.find('#menu-view-close-button').simulate('click');
     expect(toggle).toBeCalled();
   });
 
@@ -23,7 +23,7 @@ describe('<MenuView />', () => {
     const togglePopup = jest.fn();
     const toggle = jest.fn();
     const MenuView = createMenuView({ saveToFile, togglePopup, toggle });
-    MenuView.find('#close-popup-cancel-button').simulate('click');
+    MenuView.find('#menu-view-cancel-button').simulate('click');
     expect(togglePopup).toBeCalled();
   });
 
@@ -32,7 +32,7 @@ describe('<MenuView />', () => {
     const togglePopup = jest.fn();
     const toggle = jest.fn();
     const MenuView = createMenuView({ saveToFile, togglePopup, toggle });
-    MenuView.find('#close-popup-save-button').simulate('click');
+    MenuView.find('#menu-view-save-button').simulate('click');
     expect(saveToFile).toBeCalled();
   });
 });

@@ -34,6 +34,7 @@ import {
   setCustomCss,
   dropMessages,
   resetSessionId,
+  setCurrentLanguage,
 } from 'actions';
 import { safeQuerySelectorAll } from 'utils/dom';
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
@@ -352,6 +353,20 @@ class Widget extends Component {
     }
   }
 
+  setLanguage(lang) {
+    const { customData, dispatch } = this.props;
+    // if language is manually set, use the lang parameter
+    // else if language set in custom language, use it
+    // else use English as default language
+    if (lang) {
+      dispatch(setCurrentLanguage(lang));
+    } else if (customData.language) {
+      dispatch(setCurrentLanguage(customData.language));
+    } else {
+      dispatch(setCurrentLanguage('en'));
+    }
+  }
+
   initializeWidget(sendInitPayload = true) {
     const {
       storage,
@@ -440,6 +455,7 @@ class Widget extends Component {
       dispatch(showChat());
       dispatch(openChat());
     }
+    this.setLanguage();
   }
 
   // TODO: Need to erase redux store on load if localStorage
@@ -537,6 +553,11 @@ class Widget extends Component {
     }
     clearTimeout(this.tooltipTimeout);
     dispatch(toggleChat());
+  }
+
+  restartConversation() {
+    this.removeHistory();
+    this.resendInitPayload();
   }
 
   removeHistory() {
@@ -677,6 +698,8 @@ class Widget extends Component {
         tooltipPayload={this.props.tooltipPayload}
         saveChatToFile={() => this.saveConversationTexts()}
         showMenuButton={this.props.showMenuButton}
+        changeLanguage={(lang) => this.setLanguage(lang)}
+        restartConversation={() => this.restartConversation()}
       />
     );
   }

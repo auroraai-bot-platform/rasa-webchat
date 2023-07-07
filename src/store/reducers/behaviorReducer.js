@@ -3,12 +3,7 @@ import { SESSION_NAME } from 'constants';
 import * as actionTypes from '../actions/actionTypes';
 import { getLocalSession, storeParamsTo } from './helper';
 
-export default function (
-  connectingText,
-  storage,
-  docViewer = false,
-  onWidgetEvent = {},
-) {
+export default function (connectingText, storage, docViewer = false, onWidgetEvent = {}, i18n) {
   const initialState = Map({
     connected: false,
     initialized: false,
@@ -20,7 +15,8 @@ export default function (
     unreadCount: 0,
     messageDelayed: false,
     oldUrl: '',
-    pageChangeCallbacks: Map()
+    pageChangeCallbacks: Map(),
+    currentLanguage: 'en',
   });
 
   return function reducer(state = initialState, action) {
@@ -42,7 +38,9 @@ export default function (
           onWidgetEvent.onChatOpen();
         }
 
-        return storeParams(state.update('isChatOpen', isChatOpen => !isChatOpen).set('unreadCount', 0));
+        return storeParams(
+          state.update('isChatOpen', (isChatOpen) => !isChatOpen).set('unreadCount', 0)
+        );
       }
       case actionTypes.OPEN_CHAT: {
         if (onWidgetEvent.onChatOpen) onWidgetEvent.onChatOpen();
@@ -54,7 +52,7 @@ export default function (
       }
       case actionTypes.TOGGLE_FULLSCREEN: {
         if (onWidgetEvent.onChatFullScreen) onWidgetEvent.onChatFullScreen();
-        return storeParams(state.update('fullScreenMode', fullScreenMode => !fullScreenMode));
+        return storeParams(state.update('fullScreenMode', (fullScreenMode) => !fullScreenMode));
       }
       case actionTypes.TOGGLE_INPUT_DISABLED: {
         const disable = action.disable;
@@ -62,7 +60,7 @@ export default function (
           return storeParams(state.update('disabledInput', () => disable));
         }
 
-        return storeParams(state.update('disabledInput', disabledInput => !disabledInput));
+        return storeParams(state.update('disabledInput', (disabledInput) => !disabledInput));
       }
       case actionTypes.CONNECT: {
         return storeParams(state.set('connected', true).set('disabledInput', false));
@@ -95,7 +93,6 @@ export default function (
         }
         return state;
       }
-
       // Pull params from storage to redux store
       case actionTypes.PULL_SESSION: {
         const localSession = getLocalSession(storage, SESSION_NAME);
@@ -107,6 +104,10 @@ export default function (
           return fromJS({ ...localSession.params, connected, messageDelayed });
         }
         return state;
+      }
+      case actionTypes.SET_CURRENT_LANGUAGE: {
+        i18n.changeLanguage(action.language);
+        return storeParams(state.set('currentLanguage', action.language));
       }
       default:
         return state;

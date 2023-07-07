@@ -20,35 +20,25 @@ const trimQueryString = (url) => {
   return url.replace(regexQueryString, '');
 };
 
-function initStore(
-  connectingText,
-  socket,
-  storage,
-  docViewer = false,
-  onWidgetEvent,
-) {
-  const customMiddleWare = store => next => (action) => {
+function initStore(connectingText, socket, storage, docViewer = false, onWidgetEvent, i18n) {
+  const customMiddleWare = (store) => (next) => (action) => {
     const localSession = getLocalSession(storage, SESSION_NAME);
-    let sessionId = localSession
-      ? localSession.session_id
-      : null;
+    let sessionId = localSession ? localSession.session_id : null;
     if (!sessionId && socket.sessionId) {
       sessionId = socket.sessionId;
     }
     const emitMessage = (payload) => {
       const emit = () => {
-        socket.emit(
-          'user_uttered', {
-            message: payload,
-            customData: socket.customData,
-            session_id: sessionId
-          }
-        );
+        socket.emit('user_uttered', {
+          message: payload,
+          customData: socket.customData,
+          session_id: sessionId,
+        });
         store.dispatch({
           type: actionTypes.ADD_NEW_USER_MESSAGE,
           text: 'text',
           nextMessageIsTooltip: false,
-          hidden: true
+          hidden: true,
         });
       };
       if (socket.sessionConfirmed) {
@@ -96,7 +86,8 @@ function initStore(
             } else {
               let cleanCurrentUrl = cleanURL(newUrl);
               let cleanCallBackUrl = cleanURL(callback.url);
-              if (!cleanCallBackUrl.match(/\?.+$/)) { // the callback does not have a querystring
+              if (!cleanCallBackUrl.match(/\?.+$/)) {
+                // the callback does not have a querystring
                 cleanCurrentUrl = trimQueryString(cleanCurrentUrl);
                 cleanCallBackUrl = trimQueryString(cleanCallBackUrl);
               }
@@ -119,20 +110,15 @@ function initStore(
     next(action);
   };
   const reducer = combineReducers({
-    behavior: behavior(connectingText, storage, docViewer, onWidgetEvent),
+    behavior: behavior(connectingText, storage, docViewer, onWidgetEvent, i18n),
     messages: messages(storage),
-    metadata: metadata(storage)
+    metadata: metadata(storage),
   });
-
 
   // eslint-disable-next-line no-underscore-dangle
   const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-  return createStore(
-    reducer,
-    composeEnhancer(applyMiddleware(customMiddleWare)),
-  );
+  return createStore(reducer, composeEnhancer(applyMiddleware(customMiddleWare)));
 }
-
 
 export { initStore };

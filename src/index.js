@@ -9,6 +9,7 @@ import Widget from './components/Widget';
 import { initStore } from '../src/store/store';
 import socket from './socket';
 import ThemeContext from '../src/components/Widget/ThemeContext';
+import { useTranslation } from 'react-i18next';
 // eslint-disable-next-line import/no-mutable-exports
 
 const ConnectedWidget = forwardRef((props, ref) => {
@@ -77,6 +78,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
 
   const instanceSocket = useRef({});
   const store = useRef(null);
+  const { t, i18n } = useTranslation();
 
   if (!instanceSocket.current.url && !(store && store.current && store.current.socketRef)) {
     instanceSocket.current = new Socket(
@@ -101,7 +103,8 @@ const ConnectedWidget = forwardRef((props, ref) => {
       instanceSocket.current,
       storage,
       props.docViewer,
-      props.onWidgetEvent
+      props.onWidgetEvent,
+      i18n
     );
     store.current.socketRef = instanceSocket.current.marker;
     store.current.socket = instanceSocket.current;
