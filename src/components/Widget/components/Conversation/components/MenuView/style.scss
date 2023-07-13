@@ -29,11 +29,12 @@
   }
   .#{$namespace}bottom-area {
     margin-top: auto;
+    padding-top: 30px;
     height: 50%;
 
   }
   .#{$namespace}question-text {
-    margin-bottom:10px;
+    margin-bottom: 0px;
     font: $chatheading-font;
     font-size: 18px;
   }
@@ -45,8 +46,8 @@
     border-style: none;
     padding: 8px 14px;
     width: 50%;
-    margin-top:20px;
-    margin-bottom: 5px;
+    margin-top:10px;
+    margin-bottom: 10px;
     font: $speechbubble-font;
     font-size: 16px;
     cursor: pointer;
@@ -56,10 +57,21 @@
     color: $black; // $white;
     border-color: $black; //$accent;
     border-style: solid;
-    margin-bottom: 2px;
-    margin-top: 19px;
+    margin-bottom: 7px;
+    margin-top: 9px;
   }
   .#{$namespace}question-save-button {
     width: 55%;
+  }
+  .#{$namespace}language-button {
+    width: 55%;
+  }
+  .#{$namespace}language-button:disabled {
+    background-color: $gray-25; //$accent;
+    color: $black; // $white;
+    border-color: $black; //$accent;
+    border-style: solid;
+    margin-bottom: 7px;
+    margin-top: 9px;
   }
 }

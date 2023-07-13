@@ -256,9 +256,9 @@ export function resetSessionId() {
   };
 }
 
-export function setCurrentLanguage(language) {
+export function setCurrentLanguage(currentLanguage) {
   return {
     type: actions.SET_CURRENT_LANGUAGE,
-    language,
+    currentLanguage,
   };
 }

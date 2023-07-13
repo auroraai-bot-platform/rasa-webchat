@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './style.scss';
 import { Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 const langs = {
   en: { nativeName: 'English' },
@@ -22,12 +23,15 @@ const MenuView = ({
   };
 
   const languageChoises = () => {
+    const { i18n } = useTranslation();
     let languageList = [];
     Object.keys(langs).forEach((key) => {
+      const inUse = key === i18n.language;
       languageList.push(
         <button
           key={key}
-          className="rw-question-button rw-question-save-button"
+          disabled={inUse}
+          className="rw-question-button rw-language-button"
           onClick={() => handleLanguageChange(key)}
         >
           {langs[key].nativeName}
@@ -42,7 +46,9 @@ const MenuView = ({
       <div className="rw-overlay"></div>
       <div className="rw-question-area">
         <div className="rw-top-area">
-          <Trans i18nKey="teksti.text1">Translation esimerkki</Trans>
+          <div className="rw-question-text">
+            <Trans i18nKey="menuView.language" />
+          </div>
           <br />
           {languageChoises()}
         </div>
@@ -52,11 +58,11 @@ const MenuView = ({
             className="rw-question-button rw-question-save-button"
             onClick={saveChatToFile}
           >
-            Tallenna keskustelu
+            <Trans i18nKey="menuView.saveConversation" />
           </button>
           <br />
           <button id="menu-view-close-button" className="rw-question-button" onClick={toggleChat}>
-            Sulje keskustelu
+            <Trans i18nKey="menuView.closeChat" />
           </button>
           <br />
           <button
@@ -64,7 +70,7 @@ const MenuView = ({
             className="rw-question-button"
             onClick={toggleMenuView}
           >
-            Takaisin
+            <Trans i18nKey="menuView.back" />
           </button>
           <br />
         </div>

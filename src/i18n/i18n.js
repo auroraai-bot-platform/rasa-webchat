@@ -18,15 +18,21 @@ i18n
     resources: {
       en: {
         translation: {
-          teksti: {
-            text1: 'Change language',
+          menuView: {
+            language: 'Language',
+            saveConversation: 'Save conversation',
+            closeChat: 'Close chat',
+            back: 'Back',
           },
         },
       },
       fi: {
         translation: {
-          teksti: {
-            text1: 'Vaihda kieli',
+          menuView: {
+            language: 'Kieli',
+            saveConversation: 'Tallenna keskustelu',
+            closeChat: 'Sulje keskustelu',
+            back: 'Takaisin',
           },
         },
       },

@@ -157,6 +157,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
           auroraaiSessionTransfer={props.auroraaiSessionTransfer}
           saveChatToFile={props.saveChatToFile}
           showMenuButton={props.showMenuButton}
+          i18n={i18n}
         />
       </ThemeContext.Provider>
     </Provider>

@@ -54,6 +54,8 @@ class Widget extends Component {
     this.getSessionId = this.getSessionId.bind(this);
     this.intervalId = null;
     this.eventListenerCleaner = () => {};
+    this.languageInitialized = false;
+    this.defaultLanguage = 'en';
   }
 
   componentDidMount() {
@@ -354,16 +356,11 @@ class Widget extends Component {
   }
 
   setLanguage(lang) {
-    const { customData, dispatch } = this.props;
-    // if language is manually set, use the lang parameter
-    // else if language set in custom language, use it
-    // else use English as default language
+    console.log('setLanguage function. lang:', lang);
+    const { dispatch } = this.props;
+    //console.log('setLanguage i18n:', i18n.language);
     if (lang) {
       dispatch(setCurrentLanguage(lang));
-    } else if (customData.language) {
-      dispatch(setCurrentLanguage(customData.language));
-    } else {
-      dispatch(setCurrentLanguage('en'));
     }
   }
 
@@ -377,6 +374,8 @@ class Widget extends Component {
       connectOn,
       tooltipPayload,
       tooltipDelay,
+      i18n,
+      customData,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
@@ -395,9 +394,20 @@ class Widget extends Component {
         const localId = this.getSessionId();
         socket.emit('session_request', { session_id: localId });
       });
-
       // When session_confirm is received from the server:
       socket.on('session_confirm', (sessionObject) => {
+        console.log('this.languageInitialized: ', this.languageInitialized);
+        console.log('initializeWidget customData: ', customData);
+        //console.log('initializeWidget currentLanguage: ', currentLanguage);
+        console.log(
+          'initializeWidget sessionObject.props.customData: ',
+          sessionObject.props.customData
+        );
+        // if language is not set in start parameters, set default language 'en'
+        if (!sessionObject.props.customData || !sessionObject.props.customData.language) {
+          console.log('Setting default language to en');
+          sessionObject.props.customData.language = this.defaultLanguage;
+        }
         const remoteId =
           sessionObject && sessionObject.session_id ? sessionObject.session_id : sessionObject;
 
@@ -440,6 +450,8 @@ class Widget extends Component {
             this.trySendTooltipPayload();
           }, parseInt(tooltipDelay, 10));
         }
+        this.setLanguage(this.languageInitialized ? null : sessionObject.props.customData.language);
+        this.languageInitialized = true;
       });
 
       socket.on('disconnect', (reason) => {
@@ -455,7 +467,6 @@ class Widget extends Component {
       dispatch(showChat());
       dispatch(openChat());
     }
-    this.setLanguage();
   }
 
   // TODO: Need to erase redux store on load if localStorage
@@ -474,7 +485,6 @@ class Widget extends Component {
       connected,
       dispatch,
     } = this.props;
-
     // Send initial payload when chat is opened or widget is shown
     if (!initialized && connected && ((isChatOpen && isChatVisible) || embedded)) {
       // Only send initial payload if the widget is connected to the server but not yet initialized
@@ -484,6 +494,9 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
+      console.log('trySendInitPayload currentLanguage: ', currentLanguage);
+      console.log('trySendInitPayload customData.language: ', customData.language);
+      customData.language = i18n.language;
       const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
       // eslint-disable-next-line no-console
@@ -573,9 +586,13 @@ class Widget extends Component {
   }
 
   resendInitPayload() {
-    const { socket, customData, initPayload } = this.props;
+    const { socket, customData, initPayload, currentLanguage, i18n } = this.props;
     const sessionId = this.getSessionId();
-
+    //console.log('resendInitPayload currentLanguage: ', currentLanguage);
+    //console.log('resendInitPayload customData.language: ', customData.language);
+    //console.log('resendInitPayload i18n.language: ', i18n.language);
+    customData.language = i18n.language;
+    console.log('resendInitPayload customData.language: ', customData.language);
     const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
     socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
@@ -716,6 +733,7 @@ const mapStateToProps = (state) => ({
   pageChangeCallbacks: state.behavior.get('pageChangeCallbacks'),
   domHighlight: state.metadata.get('domHighlight'),
   messages: state.messages,
+  currentLanguage: state.behavior.get('currentLanguage'),
 });
 
 Widget.propTypes = {
@@ -759,6 +777,7 @@ Widget.propTypes = {
   auroraaiSessionTransfer: PropTypes.bool,
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
+  i18n: PropTypes.shape({}),
 };
 
 Widget.defaultProps = {
