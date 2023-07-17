@@ -440,9 +440,13 @@ class Widget extends Component {
           }, parseInt(tooltipDelay, 10));
         }
         // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
-        this.setLanguage(
-          i18n.language.length > 2 ? sessionObject.props.customData.language : i18n.language
-        );
+        if (i18n.language.length > 2) {
+          this.setLanguage(sessionObject.props.customData.language);
+          socket.customData.language = sessionObject.props.customData.language;
+        } else {
+          this.setLanguage(i18n.language);
+          socket.customData.language = i18n.language;
+        }
       });
 
       socket.on('disconnect', (reason) => {
@@ -475,6 +479,7 @@ class Widget extends Component {
       embedded,
       connected,
       dispatch,
+      i18n,
     } = this.props;
     // Send initial payload when chat is opened or widget is shown
     if (!initialized && connected && ((isChatOpen && isChatVisible) || embedded)) {
@@ -485,6 +490,7 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
+      customData.language = i18n.language;
       this.setLanguage(customData.language);
       const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
@@ -577,6 +583,7 @@ class Widget extends Component {
   resendInitPayload() {
     const { socket, customData, initPayload, currentLanguage, i18n } = this.props;
     const sessionId = this.getSessionId();
+
     customData.language = i18n.language;
     const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
