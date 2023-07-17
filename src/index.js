@@ -79,7 +79,6 @@ const ConnectedWidget = forwardRef((props, ref) => {
   const instanceSocket = useRef({});
   const store = useRef(null);
   const { t, i18n } = useTranslation();
-
   if (!instanceSocket.current.url && !(store && store.current && store.current.socketRef)) {
     instanceSocket.current = new Socket(
       props.socketUrl,

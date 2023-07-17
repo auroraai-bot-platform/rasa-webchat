@@ -356,9 +356,7 @@ class Widget extends Component {
   }
 
   setLanguage(lang) {
-    console.log('setLanguage function. lang:', lang);
     const { dispatch } = this.props;
-    //console.log('setLanguage i18n:', i18n.language);
     if (lang) {
       dispatch(setCurrentLanguage(lang));
     }
@@ -375,7 +373,6 @@ class Widget extends Component {
       tooltipPayload,
       tooltipDelay,
       i18n,
-      customData,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
@@ -396,16 +393,8 @@ class Widget extends Component {
       });
       // When session_confirm is received from the server:
       socket.on('session_confirm', (sessionObject) => {
-        console.log('this.languageInitialized: ', this.languageInitialized);
-        console.log('initializeWidget customData: ', customData);
-        //console.log('initializeWidget currentLanguage: ', currentLanguage);
-        console.log(
-          'initializeWidget sessionObject.props.customData: ',
-          sessionObject.props.customData
-        );
         // if language is not set in start parameters, set default language 'en'
         if (!sessionObject.props.customData || !sessionObject.props.customData.language) {
-          console.log('Setting default language to en');
           sessionObject.props.customData.language = this.defaultLanguage;
         }
         const remoteId =
@@ -450,8 +439,10 @@ class Widget extends Component {
             this.trySendTooltipPayload();
           }, parseInt(tooltipDelay, 10));
         }
-        this.setLanguage(this.languageInitialized ? null : sessionObject.props.customData.language);
-        this.languageInitialized = true;
+        // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
+        this.setLanguage(
+          i18n.language.length > 2 ? sessionObject.props.customData.language : i18n.language
+        );
       });
 
       socket.on('disconnect', (reason) => {
@@ -494,9 +485,7 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
-      console.log('trySendInitPayload currentLanguage: ', currentLanguage);
-      console.log('trySendInitPayload customData.language: ', customData.language);
-      customData.language = i18n.language;
+      this.setLanguage(customData.language);
       const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
       // eslint-disable-next-line no-console
@@ -588,11 +577,7 @@ class Widget extends Component {
   resendInitPayload() {
     const { socket, customData, initPayload, currentLanguage, i18n } = this.props;
     const sessionId = this.getSessionId();
-    //console.log('resendInitPayload currentLanguage: ', currentLanguage);
-    //console.log('resendInitPayload customData.language: ', customData.language);
-    //console.log('resendInitPayload i18n.language: ', i18n.language);
     customData.language = i18n.language;
-    console.log('resendInitPayload customData.language: ', customData.language);
     const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
     socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });

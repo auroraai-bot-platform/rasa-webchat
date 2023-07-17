@@ -105,19 +105,8 @@ export default function (connectingText, storage, docViewer = false, onWidgetEve
         return state;
       }
       case actionTypes.SET_CURRENT_LANGUAGE: {
-        console.log('setting language to: ', action.currentLanguage);
-        console.log('i18n.language before: ', i18n.language);
-
         i18n.changeLanguage(action.currentLanguage);
-        console.log('i18n.language after: ', i18n.language);
         return storeParams(state.set('currentLanguage', action.currentLanguage));
-
-        /*i18n.changeLanguage(action.currentLanguage);
-        console.log('i18n.language: ', i18n.language);
-        const lang = state.get('currentLanguage');
-        //console.log('language before: ', state.get('currentLanguage'));
-        //console.log('language before: ', lang);
-        return storeParams(state.set('currentLanguage', action.currentLanguage));*/
       }
       default:
         return state;

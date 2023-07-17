@@ -30,7 +30,7 @@ export default function (socketUrl, customData, _path, options) {
     send({
       type: 'CHAT',
       content: JSON.stringify(data),
-      sender: socketProxy.id
+      sender: socketProxy.id,
     });
   });
 
@@ -39,8 +39,8 @@ export default function (socketUrl, customData, _path, options) {
 
     send({
       type: 'SESSION_REQUEST',
-      content: JSON.stringify({authData, ...customData}),
-      sender: 'client'
+      content: JSON.stringify({ authData, ...customData }),
+      sender: 'client',
     });
   });
 
@@ -49,11 +49,7 @@ export default function (socketUrl, customData, _path, options) {
     socketProxy.id = extractSessionId(socket);
     socketProxy.customData = customData;
     stomp.subscribe(REPLY_TOPIC, socketProxy.onIncomingMessage);
-    stomp.send(
-      SUBSCRIPTION_CHANNEL,
-      {},
-      JSON.stringify({ type: 'JOIN', sender: socketProxy.id })
-    );
+    stomp.send(SUBSCRIPTION_CHANNEL, {}, JSON.stringify({ type: 'JOIN', sender: socketProxy.id }));
   };
 
   socketProxy.onerror = (error) => {
@@ -62,9 +58,9 @@ export default function (socketUrl, customData, _path, options) {
   };
 
   const emitBotUtteredMessage = (message) => {
-      delete message.recipient_id;
-      socketProxy.emit('bot_uttered', message);
-  }
+    delete message.recipient_id;
+    socketProxy.emit('bot_uttered', message);
+  };
 
   socketProxy.onIncomingMessage = (payload) => {
     const message = JSON.parse(payload.body);
@@ -75,12 +71,12 @@ export default function (socketUrl, customData, _path, options) {
       socket.close();
       socketProxy.emit('disconnect', message.content || 'server left');
     } else if (message.type === 'SESSION_CONFIRM') {
-      const props = JSON.parse(message.content)
-      socketProxy.emit('session_confirm', {session_id: socketProxy.id, ...props});
+      const props = JSON.parse(message.content);
+      socketProxy.emit('session_confirm', { session_id: socketProxy.id, ...props });
     } else if (message.type === 'CHAT') {
       const agentMessage = JSON.parse(message.content);
       if (agentMessage instanceof Array) {
-        agentMessage.forEach(message => emitBotUtteredMessage(message))
+        agentMessage.forEach((message) => emitBotUtteredMessage(message));
       } else {
         emitBotUtteredMessage(agentMessage);
       }
