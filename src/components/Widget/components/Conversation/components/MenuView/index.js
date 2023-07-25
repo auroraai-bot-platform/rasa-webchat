@@ -4,11 +4,6 @@ import './style.scss';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
 
-const langs = {
-  en: { nativeName: 'English' },
-  fi: { nativeName: 'Suomi' },
-};
-
 const MenuView = ({
   saveChatToFile,
   toggleMenuView,
@@ -23,6 +18,11 @@ const MenuView = ({
   };
 
   const languageChoises = () => {
+    const langs = {
+      en: { nativeName: 'English' },
+      fi: { nativeName: 'Suomi' },
+    };
+
     const { i18n } = useTranslation();
     let languageList = [];
     Object.keys(langs).forEach((key) => {
@@ -54,7 +54,7 @@ const MenuView = ({
         </div>
         <div className="rw-bottom-area">
           <button
-            id="manu-view-save-button"
+            id="menu-view-save-button"
             className="rw-question-button rw-question-save-button"
             onClick={saveChatToFile}
           >

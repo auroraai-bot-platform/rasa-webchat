@@ -373,6 +373,7 @@ class Widget extends Component {
       tooltipPayload,
       tooltipDelay,
       i18n,
+      customData,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
@@ -393,10 +394,6 @@ class Widget extends Component {
       });
       // When session_confirm is received from the server:
       socket.on('session_confirm', (sessionObject) => {
-        // if language is not set in start parameters, set default language 'en'
-        if (!sessionObject.props.customData || !sessionObject.props.customData.language) {
-          sessionObject.props.customData.language = this.defaultLanguage;
-        }
         const remoteId =
           sessionObject && sessionObject.session_id ? sessionObject.session_id : sessionObject;
 
@@ -441,12 +438,21 @@ class Widget extends Component {
         }
         // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
         if (i18n.language.length > 2) {
-          this.setLanguage(sessionObject.props.customData.language);
-          socket.customData.language = sessionObject.props.customData.language;
+          if (customData.language) {
+            socket.customData.language = customData.language;
+          } else if (
+            sessionObject.props.customData &&
+            sessionObject.props.customData.language != ''
+          ) {
+            socket.customData.language = sessionObject.props.customData.language;
+          } else {
+            socket.customData.language = this.defaultLanguage;
+          }
         } else {
-          this.setLanguage(i18n.language);
           socket.customData.language = i18n.language;
         }
+        console.log('socket.customData.language: ', socket.customData.language);
+        this.setLanguage(socket.customData.language);
       });
 
       socket.on('disconnect', (reason) => {
