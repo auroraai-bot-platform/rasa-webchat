@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './style.scss';
 import { Trans } from 'react-i18next';
 import { useTranslation } from 'react-i18next';
+import { LANGUAGE_LIST } from 'utils/languages';
 
 const MenuView = ({
   saveChatToFile,
@@ -18,26 +19,33 @@ const MenuView = ({
   };
 
   const languageChoises = () => {
-    const langs = {
-      en: { nativeName: 'English' },
-      fi: { nativeName: 'Suomi' },
-    };
+    const langs = LANGUAGE_LIST;
 
     const { i18n } = useTranslation();
     let languageList = [];
-    Object.keys(langs).forEach((key) => {
-      const inUse = key === i18n.language;
+    if (Object.keys(langs).length > 0) {
       languageList.push(
-        <button
-          key={key}
-          disabled={inUse}
-          className="rw-question-button rw-language-button"
-          onClick={() => handleLanguageChange(key)}
-        >
-          {langs[key].nativeName}
-        </button>
+        <div key="languageHeader">
+          <div className="rw-question-text">
+            <Trans i18nKey="menuView.language" />
+          </div>
+          <br />
+        </div>
       );
-    });
+      Object.keys(langs).forEach((key) => {
+        const inUse = key === i18n.language;
+        languageList.push(
+          <button
+            key={key}
+            disabled={inUse}
+            className="rw-question-button rw-language-button"
+            onClick={() => handleLanguageChange(key)}
+          >
+            {langs[key].nativeName}
+          </button>
+        );
+      });
+    }
     return languageList;
   };
 
@@ -45,13 +53,7 @@ const MenuView = ({
     <div>
       <div className="rw-overlay"></div>
       <div className="rw-question-area">
-        <div className="rw-top-area">
-          <div className="rw-question-text">
-            <Trans i18nKey="menuView.language" />
-          </div>
-          <br />
-          {languageChoises()}
-        </div>
+        <div className="rw-top-area">{languageChoises()}</div>
         <div className="rw-bottom-area">
           <button
             id="menu-view-save-button"

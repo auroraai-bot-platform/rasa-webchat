@@ -451,7 +451,6 @@ class Widget extends Component {
         } else {
           socket.customData.language = i18n.language;
         }
-        console.log('socket.customData.language: ', socket.customData.language);
         this.setLanguage(socket.customData.language);
       });
 

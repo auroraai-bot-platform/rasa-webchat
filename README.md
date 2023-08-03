@@ -188,6 +188,17 @@ params={{ images: { dims: { width: 300, height: 200 } } }}
 
 ### Other features
 
+#### Setting of languages
+
+The default language used in the webchat can be set with the CustomData parameter 'language' value.
+
+- If the language is not set in CustomData parameter, the default language of the Botfront is then used.
+- If the Botfront doesn't have a default language, english ('en') will be used.
+
+The language options that the webchat supports needs to be listed in the 'utils/languages.js' file. These languages will be listen in the webchat menu view that the chat user can open, and change the used language from there.
+
+The language translations of texts used in the webchat needs to be added to the 'i18n/i18n.js' file
+
 #### Tooltips
 
 Text messages received when the widget is closed will be shown as a tooltip.
