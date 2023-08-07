@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import MenuView from '../index';
-import { any } from 'prop-types';
+import { setLanguages } from 'utils/languages';
 
 describe('<MenuView />', () => {
   const createMenuView = ({
@@ -55,6 +55,8 @@ describe('<MenuView />', () => {
     const toggle = jest.fn();
     const changeLanguage = jest.fn();
     const restartConversation = jest.fn();
+
+    setLanguages({ en: 'English', fi: 'Suomi' });
 
     const MenuView = createMenuView({
       saveToFile,
