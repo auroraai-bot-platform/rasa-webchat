@@ -36,6 +36,36 @@ i18n
           },
         },
       },
+      sv: {
+        translation: {
+          menuView: {
+            language: 'Språk',
+            saveConversation: 'Spara konversationen',
+            closeChat: 'Stäng chatten',
+            back: 'Tillbaka',
+          },
+        },
+      },
+      de: {
+        translation: {
+          menuView: {
+            language: 'Sprache',
+            saveConversation: 'Gespräch speichern',
+            closeChat: 'Chat schließen',
+            back: 'Zurück',
+          },
+        },
+      },
+      fr: {
+        translation: {
+          menuView: {
+            language: 'Langue',
+            saveConversation: 'Enregistrer la conversation',
+            closeChat: 'Fermer le chat',
+            back: 'Dos',
+          },
+        },
+      },
     },
   });
 export default i18n;

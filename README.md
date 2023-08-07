@@ -81,6 +81,7 @@ In your `<body/>`:
             profileAvatar: 'AVATARPATH',
             accentColor: 'COLORCODE',
             accentDarkColor: 'COLORCODE',
+            languageList={ }
             // add other props here
           },
           null
@@ -124,6 +125,7 @@ function CustomWidget = () => {
       customData={{"language": "en"}} // arbitrary custom data. Stay minimal as this will be added to the socket
       title={"Title"}
       subtitle=""
+      languageList={}
     />
   )
 }
@@ -154,6 +156,7 @@ function CustomWidget = () => {
 | `customComponent`      | `null`             | Custom component to be used with custom responses. E.g.: `customComponent={ (messageData) => (<div>Custom React component</div>)}`. Please note that this can only be used if you call the webchat from a React application as you can't write a component in pure Javscript.                                                                                                                                                                                                                                                                                                                                |
 | `onWidgetEvent`        | `{}`               | call custom code on a specific widget event ( `onChatOpen`, `onChatClose`, `onChatHidden`, are available for now ), add a function to the desired object property in the props to have it react to the event.                                                                                                                                                                                                                                                                                                                                                                                                |
 | `showMenuButton`       | `true`             | Show menu button in the header bar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `languageList`         | `{}`               | Has the list of languages the webchat supports. The languages are shown in the menu view where the user can change them. The languageList needs to have the languages listed in a list, for example: '{ en: 'English', fi: 'Suomi', sv: 'Svensk' }'. The language needs to have the 2 letter ISO 639-1 standard country code and a name of the language, that will be shown in the webchat.                                                                                                                                                                                                                  |
 
 ### Additional Examples
 
@@ -192,12 +195,32 @@ params={{ images: { dims: { width: 300, height: 200 } } }}
 
 The default language used in the webchat can be set with the CustomData parameter 'language' value.
 
+```jsx
+customData={{"language": "en"}}
+```
+
+or if the package is loaded using a script:
+
+```jsx
+customData = { language: 'en' };
+```
+
 - If the language is not set in CustomData parameter, the default language of the Botfront is then used.
 - If the Botfront doesn't have a default language, english ('en') will be used.
 
-The language options that the webchat supports needs to be listed in the 'utils/languages.js' file. These languages will be listen in the webchat menu view that the chat user can open, and change the used language from there.
+The language options that the webchat supports needs to be listed in the 'languageList' parameter. These languages will be listen in the webchat menu view that the chat user can open, and change the used language from there.
 
-The language translations of texts used in the webchat needs to be added to the 'i18n/i18n.js' file
+```jsx
+languageList={{ en: "English", sv: "Svensk" }}
+```
+
+or if the package is loaded using a script
+
+```jsx
+languageList = { en: 'English', sv: 'Svensk' };
+```
+
+The language translations of texts used in the webchat are added to the 'i18n/i18n.js' file.
 
 #### Tooltips
 

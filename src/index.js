@@ -10,17 +10,19 @@ import { initStore } from '../src/store/store';
 import socket from './socket';
 import ThemeContext from '../src/components/Widget/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { setLanguages } from './utils/languages';
 // eslint-disable-next-line import/no-mutable-exports
 
 const ConnectedWidget = forwardRef((props, ref) => {
   class Socket {
-    constructor(url, customData, path, protocol, protocolOptions, onSocketEvent) {
+    constructor(url, customData, path, protocol, protocolOptions, onSocketEvent, languageList) {
       this.url = url;
       this.customData = customData;
       this.path = path;
       this.protocol = protocol;
       this.protocolOptions = protocolOptions;
       this.onSocketEvent = onSocketEvent;
+      this.languageList = languageList;
       this.socket = null;
       this.onEvents = [];
       this.marker = Math.random();
@@ -73,6 +75,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
       Object.keys(this.onSocketEvent).forEach((event) => {
         this.socket.on(event, this.onSocketEvent[event]);
       });
+      setLanguages(this.languageList);
     }
   }
 
@@ -86,7 +89,8 @@ const ConnectedWidget = forwardRef((props, ref) => {
       props.socketPath,
       props.protocol,
       props.protocolOptions,
-      props.onSocketEvent
+      props.onSocketEvent,
+      props.languageList
     );
   }
 
@@ -215,6 +219,7 @@ ConnectedWidget.propTypes = {
   auroraaiSessionTransfer: PropTypes.bool,
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
+  languageList: PropTypes.shape({}),
 };
 
 ConnectedWidget.defaultProps = {
@@ -264,6 +269,7 @@ ConnectedWidget.defaultProps = {
   assistBackgoundColor: '',
   auroraaiSessionTransfer: false,
   showMenuButton: true,
+  languageList: {},
 };
 
 export default ConnectedWidget;

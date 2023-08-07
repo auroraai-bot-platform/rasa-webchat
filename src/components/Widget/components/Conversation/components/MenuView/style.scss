@@ -61,10 +61,12 @@
     margin-top: 9px;
   }
   .#{$namespace}question-save-button {
-    width: 55%;
+    width: fit-content;
+    min-width: 55%;
   }
   .#{$namespace}language-button {
-    width: 55%;
+    width: fit-content;
+    min-width: 55%;
   }
   .#{$namespace}language-button:disabled {
     background-color: $gray-25; //$accent;

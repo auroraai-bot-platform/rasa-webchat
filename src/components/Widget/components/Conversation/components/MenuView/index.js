@@ -41,7 +41,7 @@ const MenuView = ({
             className="rw-question-button rw-language-button"
             onClick={() => handleLanguageChange(key)}
           >
-            {langs[key].nativeName}
+            {langs[key]}
           </button>
         );
       });
