@@ -60,7 +60,6 @@ class Widget extends Component {
 
   componentDidMount() {
     const { connectOn, autoClearCache, storage, dispatch, defaultHighlightAnimation } = this.props;
-
     // add the default highlight css to the document
     const styleNode = document.createElement('style');
     styleNode.innerHTML = defaultHighlightAnimation;
@@ -74,7 +73,6 @@ class Widget extends Component {
 
     const localSession = getLocalSession(storage, SESSION_NAME);
     const lastUpdate = localSession ? localSession.lastUpdate : 0;
-
     if (autoClearCache) {
       if (Date.now() - lastUpdate < 30 * 60 * 1000) {
         this.initializeWidget();
@@ -84,7 +82,9 @@ class Widget extends Component {
     } else {
       this.checkVersionBeforePull();
       dispatch(pullSession());
-      if (lastUpdate) this.initializeWidget();
+      if (lastUpdate) {
+        this.initializeWidget();
+      }
     }
   }
 
@@ -362,6 +362,25 @@ class Widget extends Component {
     }
   }
 
+  changeToPageLanguage() {
+    const { storage, i18n } = this.props;
+
+    const localSession = getLocalSession(storage, SESSION_NAME);
+    // If the conversation doesn't have any messages from the client, change the webchat language to the http page language
+    if (
+      !localSession ||
+      (localSession &&
+        !localSession.conversation.find((conversation) => conversation.sender === 'client'))
+    ) {
+      const docLang = document.documentElement.lang;
+      if (i18n.language !== docLang) {
+        this.toggleConversation();
+        this.setLanguage(docLang);
+        this.restartConversation();
+      }
+    }
+  }
+
   initializeWidget(sendInitPayload = true) {
     const {
       storage,
@@ -374,9 +393,14 @@ class Widget extends Component {
       tooltipDelay,
       i18n,
       customData,
+      automaticLanguageChange,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
+
+      if (automaticLanguageChange) {
+        this.changeToPageLanguage();
+      }
 
       socket.on('bot_uttered', (botUttered) => {
         // botUttered.attachment.payload.elements = [botUttered.attachment.payload.elements];
@@ -437,21 +461,23 @@ class Widget extends Component {
           }, parseInt(tooltipDelay, 10));
         }
         // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
-        if (i18n.language.length > 2) {
-          if (customData.language) {
-            socket.customData.language = customData.language;
-          } else if (
-            sessionObject.props.customData &&
-            sessionObject.props.customData.language != ''
-          ) {
-            socket.customData.language = sessionObject.props.customData.language;
+        if (!automaticLanguageChange) {
+          if (i18n.language.length > 2) {
+            if (customData.language) {
+              socket.customData.language = customData.language;
+            } else if (
+              sessionObject.props.customData &&
+              sessionObject.props.customData.language != ''
+            ) {
+              socket.customData.language = sessionObject.props.customData.language;
+            } else {
+              socket.customData.language = this.defaultLanguage;
+            }
           } else {
-            socket.customData.language = this.defaultLanguage;
+            socket.customData.language = i18n.language;
           }
-        } else {
-          socket.customData.language = i18n.language;
+          this.setLanguage(socket.customData.language);
         }
-        this.setLanguage(socket.customData.language);
       });
 
       socket.on('disconnect', (reason) => {
@@ -586,7 +612,7 @@ class Widget extends Component {
   }
 
   resendInitPayload() {
-    const { socket, customData, initPayload, currentLanguage, i18n } = this.props;
+    const { socket, customData, initPayload, i18n } = this.props;
     const sessionId = this.getSessionId();
 
     customData.language = i18n.language;
@@ -775,6 +801,7 @@ Widget.propTypes = {
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
   i18n: PropTypes.shape({}),
+  automaticLanguageChange: PropTypes.bool,
 };
 
 Widget.defaultProps = {
