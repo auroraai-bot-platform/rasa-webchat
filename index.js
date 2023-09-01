@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import RasaWebchatPro from './src/pro-src/rules-wrapper';
+import './src/i18n/i18n';
 
 import './src/pro-src/index.css';
 

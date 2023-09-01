@@ -13,6 +13,7 @@ const Conversation = (props) => {
   function toggleShowMenuView() {
     setShowMenuView(!showMenuView);
   }
+
   return (
     <div className="rw-conversation-container">
       {showMenuView && (
@@ -21,6 +22,8 @@ const Conversation = (props) => {
             saveChatToFile={props.saveChatToFile}
             toggleMenuView={toggleShowMenuView}
             toggleChat={props.toggleChat}
+            changeLanguage={props.changeLanguage}
+            restartConversation={props.restartConversation}
           />
         </div>
       )}
@@ -74,6 +77,8 @@ Conversation.propTypes = {
   showMessageDate: PropTypes.oneOfType([PropTypes.bool, PropTypes.func]),
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
+  changeLanguage: PropTypes.func,
+  restartConversation: PropTypes.func,
 };
 
 export default Conversation;

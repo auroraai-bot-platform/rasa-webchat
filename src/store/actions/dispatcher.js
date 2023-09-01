@@ -110,3 +110,7 @@ export function send(playload, text = '', customStore) {
   store.dispatch(actions.emitUserMessage(playload));
   if (text !== '') store.dispatch(actions.addUserMessage(text));
 }
+
+export function setCurrentLanguage(language) {
+  store.dispatch(actions.setCurrentLanguage(language));
+}
