@@ -372,7 +372,7 @@ class Widget extends Component {
       (localSession &&
         !localSession.conversation.find((conversation) => conversation.sender === 'client'))
     ) {
-      const docLang = document.documentElement.lang;
+      const docLang = document.documentElement.lang.substring(0, 2);
       if (i18n.language !== docLang) {
         this.toggleConversation();
         this.setLanguage(docLang);
