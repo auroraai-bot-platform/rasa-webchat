@@ -217,7 +217,7 @@ languageList={{ en: "English", sv: "Svensk" }}
 or if the package is loaded using a script
 
 ```jsx
-languageList = { en: 'English', sv: 'Svensk' };
+languageList: { en: 'English', sv: 'Svensk' };
 ```
 
 The language translations of texts used in the webchat are added to the 'i18n/i18n.js' file.
