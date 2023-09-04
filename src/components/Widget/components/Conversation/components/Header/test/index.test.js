@@ -9,8 +9,9 @@ describe('<Header />', () => {
     fullScreenMode,
     showFullScreenButton,
     saveToFile,
-    togglePopup,
-    saveButton,
+    toggleMenu,
+    menuButton,
+    toggleChat,
   }) =>
     shallow(
       <Header
@@ -18,8 +19,9 @@ describe('<Header />', () => {
         fullScreenMode={fullScreenMode}
         showFullScreenButton={showFullScreenButton}
         saveChatToFile={saveToFile}
-        toggleClosePopup={togglePopup}
-        showSaveButton={saveButton}
+        toggleMenuView={toggleMenu}
+        showMenuButton={menuButton}
+        toggleChat={toggleChat}
       />
     );
 
@@ -28,15 +30,15 @@ describe('<Header />', () => {
     const fullScreenMode = false;
     const showFullScreenButton = true;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = false;
+    const toggleMenu = jest.fn();
+    const menuButton = false;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
     });
     headerComponent.find('.rw-toggle-fullscreen-button').simulate('click');
     expect(toggle).toBeCalled();
@@ -47,15 +49,15 @@ describe('<Header />', () => {
     const fullScreenMode = false;
     const showFullScreenButton = true;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = false;
+    const toggleMenu = jest.fn();
+    const menuButton = false;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
     });
     expect(headerComponent.find('.rw-fullScreenImage')).toHaveLength(1);
   });
@@ -65,15 +67,15 @@ describe('<Header />', () => {
     const fullScreenMode = true;
     const showFullScreenButton = true;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = false;
+    const toggleMenu = jest.fn();
+    const menuButton = false;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
     });
     expect(headerComponent.find('.rw-fullScreenExitImage')).toHaveLength(1);
   });
@@ -83,54 +85,56 @@ describe('<Header />', () => {
     const fullScreenMode = true;
     const showFullScreenButton = false;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = false;
+    const toggleMenu = jest.fn();
+    const menuButton = false;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
     });
     expect(headerComponent.find('.rw-toggle-fullscreen-button')).toHaveLength(0);
   });
 
-  it('should call save chat to file when save button is clicked', () => {
+  it('should call toggle menu view when menu button is clicked', () => {
     const toggle = jest.fn();
     const fullScreenMode = true;
     const showFullScreenButton = false;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = true;
+    const toggleMenu = jest.fn();
+    const menuButton = true;
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
     });
-    headerComponent.find('.rw-save-button').simulate('click');
-    expect(saveToFile).toBeCalled();
+    headerComponent.find('.rw-menu-button').simulate('click');
+    expect(toggleMenu).toBeCalled();
   });
 
-  it('should call toggle close popup when close button is clicked', () => {
+  it('should call toggle chat button when close button is clicked', () => {
     const toggle = jest.fn();
     const fullScreenMode = true;
     const showFullScreenButton = false;
     const saveToFile = jest.fn();
-    const togglePopup = jest.fn();
-    const saveButton = false;
+    const toggleMenu = jest.fn();
+    const menuButton = false;
+    const toggleChat = jest.fn();
     const headerComponent = createHeader({
       toggle,
       fullScreenMode,
       showFullScreenButton,
       saveToFile,
-      togglePopup,
-      saveButton,
+      toggleMenu,
+      menuButton,
+      toggleChat,
     });
     headerComponent.find('.rw-close-button').simulate('click');
-    expect(togglePopup).toBeCalled();
+    expect(toggleChat).toBeCalled();
   });
 });
