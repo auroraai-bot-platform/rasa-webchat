@@ -81,7 +81,7 @@ In your `<body/>`:
             profileAvatar: 'AVATARPATH',
             accentColor: 'COLORCODE',
             accentDarkColor: 'COLORCODE',
-            languageList={ }
+            languageList: {},
             // add other props here
           },
           null
