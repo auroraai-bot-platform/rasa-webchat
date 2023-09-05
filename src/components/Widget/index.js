@@ -34,6 +34,7 @@ import {
   setCustomCss,
   dropMessages,
   resetSessionId,
+  setCurrentLanguage,
 } from 'actions';
 import { safeQuerySelectorAll } from 'utils/dom';
 import { SESSION_NAME, NEXT_MESSAGE } from 'constants';
@@ -53,6 +54,8 @@ class Widget extends Component {
     this.getSessionId = this.getSessionId.bind(this);
     this.intervalId = null;
     this.eventListenerCleaner = () => {};
+    this.languageInitialized = false;
+    this.defaultLanguage = 'en';
   }
 
   componentDidMount() {
@@ -352,6 +355,13 @@ class Widget extends Component {
     }
   }
 
+  setLanguage(lang) {
+    const { dispatch } = this.props;
+    if (lang) {
+      dispatch(setCurrentLanguage(lang));
+    }
+  }
+
   initializeWidget(sendInitPayload = true) {
     const {
       storage,
@@ -362,6 +372,8 @@ class Widget extends Component {
       connectOn,
       tooltipPayload,
       tooltipDelay,
+      i18n,
+      customData,
     } = this.props;
     if (!socket.isInitialized()) {
       socket.createSocket();
@@ -380,7 +392,6 @@ class Widget extends Component {
         const localId = this.getSessionId();
         socket.emit('session_request', { session_id: localId });
       });
-
       // When session_confirm is received from the server:
       socket.on('session_confirm', (sessionObject) => {
         const remoteId =
@@ -425,6 +436,22 @@ class Widget extends Component {
             this.trySendTooltipPayload();
           }, parseInt(tooltipDelay, 10));
         }
+        // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
+        if (i18n.language.length > 2) {
+          if (customData.language) {
+            socket.customData.language = customData.language;
+          } else if (
+            sessionObject.props.customData &&
+            sessionObject.props.customData.language != ''
+          ) {
+            socket.customData.language = sessionObject.props.customData.language;
+          } else {
+            socket.customData.language = this.defaultLanguage;
+          }
+        } else {
+          socket.customData.language = i18n.language;
+        }
+        this.setLanguage(socket.customData.language);
       });
 
       socket.on('disconnect', (reason) => {
@@ -457,8 +484,8 @@ class Widget extends Component {
       embedded,
       connected,
       dispatch,
+      i18n,
     } = this.props;
-
     // Send initial payload when chat is opened or widget is shown
     if (!initialized && connected && ((isChatOpen && isChatVisible) || embedded)) {
       // Only send initial payload if the widget is connected to the server but not yet initialized
@@ -468,6 +495,8 @@ class Widget extends Component {
       // check that session_id is confirmed
       if (!sessionId) return;
 
+      customData.language = i18n.language;
+      this.setLanguage(customData.language);
       const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
       // eslint-disable-next-line no-console
@@ -539,6 +568,11 @@ class Widget extends Component {
     dispatch(toggleChat());
   }
 
+  restartConversation() {
+    this.removeHistory();
+    this.resendInitPayload();
+  }
+
   removeHistory() {
     const { dispatch } = this.props;
     dispatch(dropMessages());
@@ -552,9 +586,10 @@ class Widget extends Component {
   }
 
   resendInitPayload() {
-    const { socket, customData, initPayload } = this.props;
+    const { socket, customData, initPayload, currentLanguage, i18n } = this.props;
     const sessionId = this.getSessionId();
 
+    customData.language = i18n.language;
     const data = { ...customData, auroraaiAccessToken: this.getAuroraaiAccesstoken() };
 
     socket.emit('user_uttered', { message: initPayload, customData: data, session_id: sessionId });
@@ -677,6 +712,8 @@ class Widget extends Component {
         tooltipPayload={this.props.tooltipPayload}
         saveChatToFile={() => this.saveConversationTexts()}
         showMenuButton={this.props.showMenuButton}
+        changeLanguage={(lang) => this.setLanguage(lang)}
+        restartConversation={() => this.restartConversation()}
       />
     );
   }
@@ -693,6 +730,7 @@ const mapStateToProps = (state) => ({
   pageChangeCallbacks: state.behavior.get('pageChangeCallbacks'),
   domHighlight: state.metadata.get('domHighlight'),
   messages: state.messages,
+  currentLanguage: state.behavior.get('currentLanguage'),
 });
 
 Widget.propTypes = {
@@ -736,6 +774,7 @@ Widget.propTypes = {
   auroraaiSessionTransfer: PropTypes.bool,
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
+  i18n: PropTypes.shape({}),
 };
 
 Widget.defaultProps = {

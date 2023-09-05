@@ -44,6 +44,8 @@ const WidgetLayout = (props) => {
           inputTextFieldHint={props.inputTextFieldHint}
           saveChatToFile={props.saveChatToFile}
           showMenuButton={props.showMenuButton}
+          changeLanguage={props.changeLanguage}
+          restartConversation={props.restartConversation}
         />
       )}
       {!props.embedded && (
@@ -98,6 +100,8 @@ WidgetLayout.propTypes = {
   tooltipPayload: PropTypes.string,
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
+  changeLanguage: PropTypes.func,
+  restartConversation: PropTypes.func,
 };
 
 export default connect(mapStateToProps)(WidgetLayout);
