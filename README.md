@@ -70,8 +70,8 @@ In your `<body/>`:
     let e = document.createElement('script'),
       t = document.head || document.getElementsByTagName('head')[0];
     (e.src =
-      'https://cdn.jsdelivr.net/gh/auroraai-bot-platform/rasa-webchat@main/builds/latest.js'),
-      // For specific version use 'https://cdn.jsdelivr.net/gh/auroraai-bot-platform/rasa-webchat@main/builds/x.x.x.js' where replace the 'x.x.x' with the version that you want
+      'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@latest/lib/index.js'),
+      // For specific version use 'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@x.x.x/lib/index.js' where replace the 'x.x.x' with the version that you want
       (e.async = !0),
       (e.onload = () => {
         window.WebChat.default(
@@ -92,8 +92,8 @@ In your `<body/>`:
 </script>
 ```
 
-⚠️ Leave the version tag as 'latest' if you always want the latest version of the auroraai-bot-platform/rasa-webchat. But if you want to control when to update the widget, we recommend adding a version tag, e.g for version 1.0.0 'https://cdn.jsdelivr.net/gh/auroraai-bot-platform/rasa-webchat@main/builds/1.0.0.js'
-The available versions of the auroraai-bot-platform/rasa-webchat can be seen in https://github.com/auroraai-bot-platform/rasa-webchat/tree/main/builds.
+⚠️ Leave the version tag as 'latest' if you always want the latest version of the auroraai-bot-platform/rasa-webchat. But if you want to control when to update the widget, we recommend adding a version tag, e.g for version 1.0.0 'https://cdn.jsdelivr.net/npm/@auroraai-bot-platform/rasa-webchat@1.0.0/lib/index.js'
+The available versions of the auroraai-bot-platform/rasa-webchat can be seen in https://www.npmjs.com/package/@auroraai-bot-platform/rasa-webchat?activeTab=versions.
 
 About images: `width` and `height` define the size in pixels that images in messages are crop-scaled to. If not present, the image will scale to the maximum width of the container and the image.
 
