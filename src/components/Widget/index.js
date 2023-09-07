@@ -42,6 +42,7 @@ import { isVideo, isImage, isButtons, isText, isCarousel } from './msgProcessor'
 import WidgetLayout from './layout';
 import { storeLocalSession, getLocalSession } from '../../store/reducers/helper';
 import { setAuroraaiAccessToken } from '../../store/actions';
+import { LANGUAGE_LIST } from 'utils/languages';
 
 class Widget extends Component {
   constructor(props) {
@@ -362,7 +363,7 @@ class Widget extends Component {
     }
   }
 
-  changeToPageLanguage() {
+  automaticLanguageChange() {
     const { storage, i18n } = this.props;
 
     const localSession = getLocalSession(storage, SESSION_NAME);
@@ -372,13 +373,29 @@ class Widget extends Component {
       (localSession &&
         !localSession.conversation.find((conversation) => conversation.sender === 'client'))
     ) {
+      // Only accept 2 letter language code
       const docLang = document.documentElement.lang.substring(0, 2);
+      // If the page language is already the current language do nothing
+      console.log('automatic change to: ', docLang);
+      console.log('automatic change current: ', i18n.language);
       if (i18n.language !== docLang) {
-        this.toggleConversation();
-        this.setLanguage(docLang);
-        this.restartConversation();
+        console.log('automatic change languageList: ', LANGUAGE_LIST);
+        console.log(
+          'automatic change languageList: ',
+          Object.keys(LANGUAGE_LIST).filter((item) => item)
+        );
+        // Only change to languages listed in the languageList parameter. This way we don't change to unsupported languages
+        if (Object.keys(LANGUAGE_LIST).some((lang) => lang === docLang)) {
+          console.log('CHANGING TO: ', docLang);
+          this.toggleConversation();
+          this.setLanguage(docLang);
+          this.restartConversation();
+          return false;
+        }
+        return true;
       }
     }
+    return false;
   }
 
   initializeWidget(sendInitPayload = true) {
@@ -398,8 +415,9 @@ class Widget extends Component {
     if (!socket.isInitialized()) {
       socket.createSocket();
 
+      let languageChangeNeeded = false;
       if (automaticLanguageChange) {
-        this.changeToPageLanguage();
+        languageChangeNeeded = this.automaticLanguageChange();
       }
 
       socket.on('bot_uttered', (botUttered) => {
@@ -461,7 +479,8 @@ class Widget extends Component {
           }, parseInt(tooltipDelay, 10));
         }
         // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
-        if (!automaticLanguageChange) {
+        console.log('languageChangeNeeded: ', languageChangeNeeded);
+        if (!automaticLanguageChange || languageChangeNeeded) {
           if (i18n.language.length > 2) {
             if (customData.language) {
               socket.customData.language = customData.language;
@@ -476,6 +495,7 @@ class Widget extends Component {
           } else {
             socket.customData.language = i18n.language;
           }
+          console.log('NORMAL LANGUAGE CHANGE: ', socket.customData.language);
           this.setLanguage(socket.customData.language);
         }
       });
