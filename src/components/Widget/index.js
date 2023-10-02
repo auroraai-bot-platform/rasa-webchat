@@ -376,17 +376,9 @@ class Widget extends Component {
       // Only accept 2 letter language code
       const docLang = document.documentElement.lang.substring(0, 2);
       // If the page language is already the current language do nothing
-      console.log('automatic change to: ', docLang);
-      console.log('automatic change current: ', i18n.language);
       if (i18n.language !== docLang) {
-        console.log('automatic change languageList: ', LANGUAGE_LIST);
-        console.log(
-          'automatic change languageList: ',
-          Object.keys(LANGUAGE_LIST).filter((item) => item)
-        );
         // Only change to languages listed in the languageList parameter. This way we don't change to unsupported languages
         if (Object.keys(LANGUAGE_LIST).some((lang) => lang === docLang)) {
-          console.log('CHANGING TO: ', docLang);
           this.toggleConversation();
           this.setLanguage(docLang);
           this.restartConversation();
@@ -479,7 +471,6 @@ class Widget extends Component {
           }, parseInt(tooltipDelay, 10));
         }
         // if i18n.language is a i18n default language like 'en-US' use the language received from the Botfront
-        console.log('languageChangeNeeded: ', languageChangeNeeded);
         if (!automaticLanguageChange || languageChangeNeeded) {
           if (i18n.language.length > 2) {
             if (customData.language) {
