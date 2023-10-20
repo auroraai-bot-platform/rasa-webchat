@@ -161,6 +161,7 @@ const ConnectedWidget = forwardRef((props, ref) => {
           saveChatToFile={props.saveChatToFile}
           showMenuButton={props.showMenuButton}
           i18n={i18n}
+          automaticLanguageChange={props.automaticLanguageChange}
         />
       </ThemeContext.Provider>
     </Provider>
@@ -220,6 +221,7 @@ ConnectedWidget.propTypes = {
   saveChatToFile: PropTypes.func,
   showMenuButton: PropTypes.bool,
   languageList: PropTypes.shape({}),
+  automaticLanguageChange: PropTypes.bool,
 };
 
 ConnectedWidget.defaultProps = {
@@ -270,6 +272,7 @@ ConnectedWidget.defaultProps = {
   auroraaiSessionTransfer: false,
   showMenuButton: true,
   languageList: {},
+  automaticLanguageChange: true,
 };
 
 export default ConnectedWidget;
